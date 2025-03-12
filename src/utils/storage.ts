@@ -79,6 +79,10 @@ export const copyReport = async () => {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
+      style: {
+        fontSize: '16px',
+        width: '90%',
+      },
     });
   } catch (error) {
     console.error("클립보드 복사 실패:", error);
@@ -86,6 +90,10 @@ export const copyReport = async () => {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
+      style: {
+        fontSize: '16px',
+        width: '90%',
+      },
     });
   }
 };
