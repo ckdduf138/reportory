@@ -39,7 +39,7 @@ export const deleteReport = (index: number) => {
 
 // 리포트를 복사하는 함수
 export const copyReport = () => {
-  const reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  const reports = JSON.parse(localStorage.getItem('STORAGE_KEY') || '[]');
 
   const reportText = reports.map((report: { startTime: string, endTime: string, content: string }) => {
     const formattedStartTime = formatTime(report.startTime);
@@ -47,20 +47,41 @@ export const copyReport = () => {
     return `${formattedStartTime} ~ ${formattedEndTime}\n${report.content}\n\n`;
   }).join('');
 
-  navigator.clipboard.writeText(reportText)
-    .then(() => {
-      toast.success('클립보드에 복사되었습니다', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: true,
+  // 모바일에서 클립보드를 처리하는 방식
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(reportText)
+      .then(() => {
+        toast.success('모든 리포트 내용이 클립보드에 복사되었습니다!', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          style: {
+            fontSize: '16px',
+            width: '90%',
+          },
+        });
+      })
+      .catch((error) => {
+        console.error('클립보드 복사 실패:', error);
+        toast.error('복사하는데 실패했습니다. 다시 시도해주세요.', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          style: {
+            fontSize: '16px',
+            width: '90%',
+          },
+        });
       });
-    })
-    .catch((error) => {
-      console.error('클립보드 복사 실패:', error);
-      toast.error('복사하는데 실패했습니다', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
+  } else {
+    toast.error('클립보드 접근 권한이 필요합니다. 다시 시도해주세요.', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      style: {
+        fontSize: '16px',
+        width: '90%',
+      },
     });
-}
+  }
+};
