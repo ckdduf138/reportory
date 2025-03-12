@@ -11,13 +11,12 @@ interface ReportViewerProps {
 }
 
 const formatTime = (time: string): string => {
-  const [hours, minutes] = time.split(':').map(Number); // 시간과 분을 분리하고 숫자로 변환
-  const ampm = hours >= 12 ? '오후' : '오전'; // 오전/오후 판단
-  const formattedHours = hours % 12 || 12; // 12시간제로 변환
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // 1자리 분은 2자리로 변환
+  const [hours, minutes] = time.split(':').map(Number);
+  const ampm = hours >= 12 ? '오후' : '오전';
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
   return `${ampm} ${formattedHours}:${formattedMinutes}`;
 };
-
 
 const ReportViewer: React.FC<ReportViewerProps> = ({ reports }) => {
   const [expandedReportIndex, setExpandedReportIndex] = useState<number | null>(null);
@@ -40,23 +39,24 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports }) => {
             <li
               key={index}
               className={`flex flex-col bg-gray-100 p-2 rounded mb-2 cursor-pointer transition-all duration-300 ease-in-out ${
-                  expandedReportIndex === index ? 'bg-gray-300' : ''
+                expandedReportIndex === index ? 'bg-gray-300' : ''
               }`}
               onClick={() => handleClick(index)}
               style={{
-                  height: expandedReportIndex === index ? 'auto' : '60px',
-                  overflow: 'hidden',
+                backgroundColor: expandedReportIndex === index ? '#F6F8F9' : '',
+                height: expandedReportIndex === index ? 'auto' : '60px',
+                overflow: 'hidden',
               }}
             >
               {/* 일반 보기 */}
               <div className="text-black">
-                  <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
-                  <p>{expandedReportIndex !== index ? report.content.slice(0, 50) : ''}</p>
+                <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
+                <p>{expandedReportIndex !== index ? report.content.slice(0, 50) : ''}</p>
               </div>
 
               {/* 상세보기 */}
               {expandedReportIndex === index && (
-                  <p>{report.content}</p>
+                <p>{report.content}</p>
               )}
             </li>
           ))}

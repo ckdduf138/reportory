@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { deleteReport, getReports, saveReport } from '../utils/storage';
+
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
+
+import { deleteReport, getReports, saveReport } from '../utils/storage';
 
 const Home: React.FC = () => {
   const [reports, setReports] = useState<{ startTime: string; endTime: string; content: string; }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 컴포넌트가 렌더링될 때 저장된 리포트를 가져오기
   useEffect(() => {
     setReports(getReports());
   }, []);
 
   const handleAddReport = (startTime: string, endTime: string, content: string) => {
     saveReport(startTime, endTime, content);
-    setReports(getReports());  // 새로 추가된 리포트를 반영
+    setReports(getReports());
     setIsModalOpen(false);
   };
 
   const handleDelete = (index: number) => {
     deleteReport(index);
-    setReports(getReports());  // 삭제 후 리포트를 갱신
+    setReports(getReports());
   };
 
   return (
     <div className="min-h-screen flex items-start justify-center relative">
-      <div className="p-6 w-full max-w-lg">
+      <div className="p-6 w-full max-w-7xl">
         <h1 className="text-2xl font-bold mb-4 text-center text-black">Daily Report</h1>
 
         {isModalOpen && (
