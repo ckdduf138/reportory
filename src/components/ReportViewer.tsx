@@ -56,7 +56,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
             >
               {/* 리포트 삭제 버튼 */}
               <img
-                src="/images/home/ic-cross-circle.svg"
+                src={`${process.env.PUBLIC_URL}/images/home/ic-cross-circle.svg`}
                 alt="Delete"
                 onClick={(e) => {
                   e.stopPropagation();
