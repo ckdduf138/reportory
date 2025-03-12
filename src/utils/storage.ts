@@ -8,20 +8,39 @@ const STORE_NAME = "reports";
 // IndexedDB 열기
 const openDB = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, 1);
+    const request = indexedDB.open(DB_NAME, 2);
 
     request.onupgradeneeded = (event) => {
       const db = request.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         const objectStore = db.createObjectStore(STORE_NAME, { keyPath: "id" });
-        objectStore.createIndex("content", "content", { unique: false });
         objectStore.createIndex("startTime", "startTime", { unique: false });
-        objectStore.createIndex("endTime", "endTime", { unique: false });
       }
     };
 
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
+  });
+};
+
+// IndexedDB 삭제
+export const deleteDatabase = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(DB_NAME);
+
+    request.onsuccess = () => {
+      console.log(`IndexedDB "${DB_NAME}" 삭제 완료`);
+      resolve();
+    };
+
+    request.onerror = (event) => {
+      console.error(`IndexedDB "${DB_NAME}" 삭제 실패`, event);
+      reject(request.error);
+    };
+
+    request.onblocked = () => {
+      console.warn(`⚠️ IndexedDB "${DB_NAME}" 삭제가 다른 탭에서 사용 중이라 지연됨`);
+    };
   });
 };
 

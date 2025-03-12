@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
 
-import { deleteReport, getReports, saveReport, copyReport } from '../utils/storage';
+import { deleteDatabase, deleteReport, getReports, saveReport, copyReport } from '../utils/storage';
 import { ToastContainer } from 'react-toastify';
 
 import { Report } from '../types/Report';
@@ -41,6 +41,11 @@ const Home: React.FC = () => {
     copyReport();
   };
 
+  const deleteAndReload = async () => {
+    await deleteDatabase();
+    window.location.reload();
+  };
+  
   return (
     <div className="min-h-screen flex items-start justify-center relative">
       <div className="p-6 w-full max-w-7xl">
@@ -50,6 +55,14 @@ const Home: React.FC = () => {
           reports={reports} 
           delete_report={handleDelete}
         />
+
+        {/* 초기화 버튼 */}
+        <button
+          className="fixed top-6 right-6 w-16 h-8 bg-[#DDDDDD] flex items-center justify-center shadow-lg"
+          onClick={() => deleteAndReload()}
+        >
+          초기화
+        </button>
 
         {/* 업로드 버튼 */}
         <button
