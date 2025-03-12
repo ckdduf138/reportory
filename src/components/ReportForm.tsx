@@ -49,7 +49,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
           />
         </div>
 
@@ -59,7 +59,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
           />
         </div>
 
@@ -68,7 +68,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-40 resize-none"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500 h-40 resize-none"
             placeholder="내용을 입력해주세요.."
           />
         </div>
