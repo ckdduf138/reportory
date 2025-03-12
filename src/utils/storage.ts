@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { formatTime } from "./transalte";
+import { Report } from "../types/Report";
 
 const DB_NAME = "DailyReportDB";
 const STORE_NAME = "reports";
@@ -12,7 +13,7 @@ const openDB = (): Promise<IDBDatabase> => {
     request.onupgradeneeded = (event) => {
       const db = request.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
+        db.createObjectStore(STORE_NAME, { keyPath: "id" });
       }
     };
 
@@ -22,19 +23,19 @@ const openDB = (): Promise<IDBDatabase> => {
 };
 
 // 리포트 저장
-export const saveReport = async (startTime: string, endTime: string, content: string) => {
+export const saveReport = async (report: Report) => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, "readwrite");
   const store = tx.objectStore(STORE_NAME);
 
-  const newReport = { startTime, endTime, content };
+  const newReport = report;
 
   store.put(newReport);
 };
 
 
 // 리포트 가져오기
-export const getReports = async (): Promise<{ id: number; startTime: string; endTime: string; content: string }[]> => {
+export const getReports = async (): Promise<Report[]> => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, "readonly");
   const store = tx.objectStore(STORE_NAME);
@@ -53,7 +54,7 @@ export const getReports = async (): Promise<{ id: number; startTime: string; end
 };
 
 // 리포트 삭제
-export const deleteReport = async (id: number) => {
+export const deleteReport = async (id: string) => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, "readwrite");
   const store = tx.objectStore(STORE_NAME);

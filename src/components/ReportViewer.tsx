@@ -1,24 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-interface Report {
-  id: number;
-  startTime: string;
-  endTime: string;
-  content: string;
-}
+import { formatTime } from '../utils/transalte';
+
+import { Report } from '../types/Report';
 
 interface ReportViewerProps {
   reports: Report[];
-  delete_report: (id: number) => void;
+  delete_report: (id: string) => void;
 }
-
-const formatTime = (time: string): string => {
-  const [hours, minutes] = time.split(':').map(Number);
-  const ampm = hours >= 12 ? '오후' : '오전';
-  const formattedHours = hours % 12 || 12;
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  return `${ampm} ${formattedHours}:${formattedMinutes}`;
-};
 
 const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) => {
   const [expandedReportIndex, setExpandedReportIndex] = useState<number | null>(null);
@@ -31,7 +20,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
     }
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     delete_report(id);
   };
 
@@ -55,6 +44,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
                 position: 'relative',
               }}
             >
+
               {/* 리포트 삭제 버튼 */}
               <img
                 src={`${process.env.PUBLIC_URL}/images/home/ic-cross-circle.svg`}

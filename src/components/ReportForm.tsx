@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-import { formatTime } from '../utils/transalte';
-
-interface Report {
-  id: number;
-  startTime: string;
-  endTime: string;
-  content: string;
-}
+import { Report } from '../types/Report';
 
 interface ReportFormProps {
   reports: Report[];
-  onSubmit: (startTime: string, endTime: string, content: string) => void;
+  isOpen: boolean;
+  onSubmit: (report: Report) => void;
   onClose: () => void;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onClose }) => {
+  const [scale, setScale] = useState(0.5);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [content, setContent] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setScale(1);
+    } else {
+      setScale(0.5);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     setStartTime(reports.length > 1 ? reports[reports.length - 1].endTime : '00:00');
@@ -29,7 +32,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
 
   const handleSubmit = () => {
     if (startTime && endTime && content.trim()) {
-      onSubmit(startTime, endTime, content);
+      onSubmit({startTime: startTime, endTime: endTime, content: content} as Report);
       setStartTime('');
       setEndTime('');
       setContent('');
@@ -40,7 +43,11 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-7xl">
+      <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-7xl"
+        style={{
+          transform: `scale(${scale})`,
+          transition: 'transform 0.3s ease',
+        }}>
         <h2 className="text-xl font-semibold text-gray-800 mb-6">리포트 추가하기</h2>
         
         <div className="mb-6">

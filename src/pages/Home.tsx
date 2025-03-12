@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
@@ -6,8 +6,11 @@ import ReportViewer from '../components/ReportViewer';
 import { deleteReport, getReports, saveReport, copyReport } from '../utils/storage';
 import { ToastContainer } from 'react-toastify';
 
+import { Report } from '../types/Report';
+import { generateUUID } from '../utils/transalte';
+
 const Home: React.FC = () => {
-  const [reports, setReports] = useState<{ id: number; startTime: string; endTime: string; content: string; }[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -18,15 +21,18 @@ const Home: React.FC = () => {
     fetchReports();
   }, []);
   
-  const handleAddReport = async (startTime: string, endTime: string, content: string) => {
-    await saveReport(startTime, endTime, content);
+  const handleAddReport = async (report: Report) => {
+    report.id = generateUUID();
+
+    await saveReport(report);
     const data = await getReports();
+
     setReports(data);
     setIsModalOpen(false);
   };
   
-  const handleDelete = async (index: number) => {
-    await deleteReport(index);
+  const handleDelete = async (id: string) => {
+    await deleteReport(id);
     const data = await getReports();
     setReports(data);
   };
@@ -63,6 +69,7 @@ const Home: React.FC = () => {
 
         {isModalOpen && (
           <ReportForm
+            isOpen={isModalOpen}
             reports={reports}
             onSubmit={handleAddReport}
             onClose={() => setIsModalOpen(false)}
