@@ -13,7 +13,10 @@ const openDB = (): Promise<IDBDatabase> => {
     request.onupgradeneeded = (event) => {
       const db = request.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        const objectStore = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        objectStore.createIndex("content", "content", { unique: false });
+        objectStore.createIndex("startTime", "startTime", { unique: false });
+        objectStore.createIndex("endTime", "endTime", { unique: false });
       }
     };
 
@@ -39,10 +42,11 @@ export const getReports = async (): Promise<Report[]> => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, "readonly");
   const store = tx.objectStore(STORE_NAME);
+  const index = store.index("startTime");
 
   return new Promise((resolve, reject) => {
-    const request = store.getAll();
-    
+    const request = index.getAll();
+
     request.onsuccess = () => {
       resolve(request.result);
     };
