@@ -57,8 +57,6 @@ export const deleteReport = async (id: number) => {
   const db = await openDB();
   const tx = db.transaction(STORE_NAME, "readwrite");
   const store = tx.objectStore(STORE_NAME);
-  
-  console.log(id);
 
   store.delete(id);
 };
@@ -74,16 +72,20 @@ export const copyReport = async () => {
   }).join("");
 
   try {
-    await navigator.clipboard.writeText(reportText);
-    toast.success("클립보드에 복사되었어요.", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      style: {
-        fontSize: '16px',
-        width: '90%',
-      },
-    });
+    if(reportText !== '') {
+      await navigator.clipboard.writeText(reportText);
+    }
+    else {
+      toast.info("먼저 기록해주세요.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          fontSize: '16px',
+          width: '90%',
+        },
+      });
+    }
   } catch (error) {
     console.error("클립보드 복사 실패:", error);
     toast.error("클립보드에 복사하는데 실패했어요..", {
