@@ -1,59 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { deleteReport, getReports, saveReport } from '../utils/storage';
+import ReportForm from '../components/ReportForm';
+import ReportViewer from '../components/ReportViewer';
 
 const Home: React.FC = () => {
-    const [report, setReport] = useState('');
-    const [reports, setReports] = useState<string[]>([]);
-  
-    useEffect(() => {
-        setReports(getReports());
-    }, []);
-  
-    const handleSubmit = () => {
-        if (report.trim()) {
-            saveReport(report);
-            setReports(getReports());
-            setReport('');
-        }
-    };
-  
-    const handleDelete = (index: number) => {
-        deleteReport(index);
-        setReports(getReports());
-    };
+  const [reports, setReports] = useState<{ startTime: string; endTime: string; content: string; }[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    return (
-        <div className='p-6'>
-        <h1 className='text-2xl font-bold mb-4'>Daily Report</h1>
-        <textarea
-            className='w-full h-32 p-2 border rounded mb-4'
-            value={report}
-            onChange={(e) => setReport(e.target.value)}
-            placeholder='Write your daily report here...'
-        />
-        <button 
-            className='bg-blue-500 text-white px-4 py-2 rounded mb-4'
-            onClick={handleSubmit}
+  // 컴포넌트가 렌더링될 때 저장된 리포트를 가져오기
+  useEffect(() => {
+    setReports(getReports());
+  }, []);
+
+  const handleAddReport = (startTime: string, endTime: string, content: string) => {
+    saveReport(startTime, endTime, content);
+    setReports(getReports());  // 새로 추가된 리포트를 반영
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = (index: number) => {
+    deleteReport(index);
+    setReports(getReports());  // 삭제 후 리포트를 갱신
+  };
+
+  return (
+    <div className="min-h-screen flex items-start justify-center relative">
+      <div className="p-6 w-full max-w-lg">
+        <h1 className="text-2xl font-bold mb-4 text-center text-black">Daily Report</h1>
+
+        {isModalOpen && (
+          <ReportForm
+            onSubmit={handleAddReport}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
+
+        <ReportViewer reports={reports} />
+
+        {/* 플로팅 버튼 */}
+        <button
+          className="fixed bottom-8 right-8 w-16 h-16 bg-black text-white text-4xl flex items-center justify-center rounded-full shadow-lg"
+          onClick={() => setIsModalOpen(true)}
         >
-            Submit
+          <img src='/images/home/icon_plus.svg'/>
         </button>
-
-        <h2 className='text-xl font-semibold mt-6'>Saved Reports</h2>
-        <ul className='mt-2'>
-            {reports.map((r, index) => (
-            <li key={index} className='flex justify-between items-center bg-gray-100 p-2 rounded mb-2'>
-                <span>{r}</span>
-                <button 
-                className='bg-red-500 text-white px-2 py-1 rounded'
-                onClick={() => handleDelete(index)}
-                >
-                Delete
-                </button>
-            </li>
-            ))}
-        </ul>
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Home;
