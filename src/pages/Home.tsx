@@ -40,7 +40,10 @@ const Home: React.FC = () => {
       <div className="p-6 w-full max-w-7xl">
         <h1 className="text-2xl font-bold mb-4 text-center text-black">Daily Report</h1>
 
-        <ReportViewer reports={reports} delete_report={handleDelete}/>
+        <ReportViewer 
+          reports={reports} 
+          delete_report={handleDelete}
+        />
 
         {/* 업로드 버튼 */}
         <button
@@ -60,6 +63,7 @@ const Home: React.FC = () => {
 
         {isModalOpen && (
           <ReportForm
+            reports={reports}
             onSubmit={handleAddReport}
             onClose={() => setIsModalOpen(false)}
           />

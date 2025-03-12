@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { formatTime } from '../utils/transalte';
+
+interface Report {
+  id: number;
+  startTime: string;
+  endTime: string;
+  content: string;
+}
 
 interface ReportFormProps {
+  reports: Report[];
   onSubmit: (startTime: string, endTime: string, content: string) => void;
   onClose: () => void;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ onSubmit, onClose }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [content, setContent] = useState('');
+
+  useEffect(() => {
+    setStartTime(reports[reports.length - 1].endTime);
+
+    const currentTime = new Date();
+    setEndTime(`${currentTime.getHours()}:${currentTime.getMinutes()}`);
+  }, [reports]);
 
   const handleSubmit = () => {
     if (startTime && endTime && content.trim()) {
