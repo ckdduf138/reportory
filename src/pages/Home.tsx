@@ -36,13 +36,6 @@ const Home: React.FC = () => {
 
         <ReportViewer reports={reports} delete_report={handleDelete}/>
 
-        {isModalOpen && (
-          <ReportForm
-            onSubmit={handleAddReport}
-            onClose={() => setIsModalOpen(false)}
-          />
-        )}
-
         {/* 업로드 버튼 */}
         <button
           className="fixed bottom-8 left-8 w-16 h-16 bg-[#DDDDDD] flex items-center justify-center rounded-full shadow-lg"
@@ -59,6 +52,13 @@ const Home: React.FC = () => {
           <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
         </button>
 
+        {isModalOpen && (
+          <ReportForm
+            onSubmit={handleAddReport}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
+        
         <ToastContainer />
       </div>
     </div>
