@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 interface Report {
+  id: number;
   startTime: string;
   endTime: string;
   content: string;
@@ -8,7 +9,7 @@ interface Report {
 
 interface ReportViewerProps {
   reports: Report[];
-  delete_report: (index: number) => void;
+  delete_report: (id: number) => void;
 }
 
 const formatTime = (time: string): string => {
@@ -30,8 +31,8 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
     }
   };
 
-  const handleDelete = (index: number) => {
-    delete_report(index);
+  const handleDelete = (id: number) => {
+    delete_report(id);
   };
 
   return (
@@ -60,7 +61,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
                 alt="Delete"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDelete(index);
+                  handleDelete(report.id);
                 }}
                 style={{
                   position: 'absolute',

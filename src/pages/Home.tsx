@@ -7,22 +7,28 @@ import { deleteReport, getReports, saveReport, copyReport } from '../utils/stora
 import { ToastContainer } from 'react-toastify';
 
 const Home: React.FC = () => {
-  const [reports, setReports] = useState<{ startTime: string; endTime: string; content: string; }[]>([]);
+  const [reports, setReports] = useState<{ id: number; startTime: string; endTime: string; content: string; }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    setReports(getReports());
+    const fetchReports = async () => {
+      const data = await getReports();
+      setReports(data);
+    };
+    fetchReports();
   }, []);
-
-  const handleAddReport = (startTime: string, endTime: string, content: string) => {
-    saveReport(startTime, endTime, content);
-    setReports(getReports());
+  
+  const handleAddReport = async (startTime: string, endTime: string, content: string) => {
+    await saveReport(startTime, endTime, content);
+    const data = await getReports();
+    setReports(data);
     setIsModalOpen(false);
   };
-
-  const handleDelete = (index: number) => {
-    deleteReport(index);
-    setReports(getReports());
+  
+  const handleDelete = async (index: number) => {
+    await deleteReport(index);
+    const data = await getReports();
+    setReports(data);
   };
 
   const handleExport = () => {
@@ -58,7 +64,7 @@ const Home: React.FC = () => {
             onClose={() => setIsModalOpen(false)}
           />
         )}
-        
+
         <ToastContainer />
       </div>
     </div>
