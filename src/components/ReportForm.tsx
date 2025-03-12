@@ -19,49 +19,60 @@ const ReportForm: React.FC<ReportFormProps> = ({ onSubmit, onClose }) => {
     }
   };
 
+  const isFormValid = startTime && endTime && content.trim();
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
-        <h2 className="text-xl font-semibold mb-4">Add Report</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Start Time</label>
+      <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-7xl">
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">리포트 추가하기</h2>
+        
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">시작 시간</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">End Time</label>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">종료 시간</label>
           <input
             type="time"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Content</label>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">내용</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-2 border rounded h-32"
-            placeholder="Write your report here..."
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-40 resize-none"
+            placeholder="내용을 입력해주세요.."
           />
         </div>
-        <div className="flex justify-between">
+
+        <div className="flex justify-between items-center mt-6">
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded"
+            className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
             onClick={onClose}
           >
-            Cancel
+            취소
           </button>
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            disabled={!isFormValid}
             onClick={handleSubmit}
+            className={`px-6 py-2 rounded-lg shadow-md transition duration-300 ${
+              isFormValid
+                ? 'bg-gray-700 hover:bg-gray-800 text-white'
+                : 'bg-gray-300 cursor-not-allowed'
+            }`}
           >
-            Submit
+            저장
           </button>
         </div>
       </div>
