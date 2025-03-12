@@ -8,6 +8,7 @@ interface Report {
 
 interface ReportViewerProps {
   reports: Report[];
+  delete_report: (index: number) => void;
 }
 
 const formatTime = (time: string): string => {
@@ -18,7 +19,7 @@ const formatTime = (time: string): string => {
   return `${ampm} ${formattedHours}:${formattedMinutes}`;
 };
 
-const ReportViewer: React.FC<ReportViewerProps> = ({ reports }) => {
+const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) => {
   const [expandedReportIndex, setExpandedReportIndex] = useState<number | null>(null);
 
   const handleClick = (index: number) => {
@@ -27,6 +28,10 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports }) => {
     } else {
       setExpandedReportIndex(index);
     }
+  };
+
+  const handleDelete = (index: number) => {
+    delete_report(index);
   };
 
   return (
@@ -46,8 +51,25 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports }) => {
                 backgroundColor: expandedReportIndex === index ? '#F6F8F9' : '',
                 height: expandedReportIndex === index ? 'auto' : '60px',
                 overflow: 'hidden',
+                position: 'relative',
               }}
             >
+              {/* 리포트 삭제 버튼 */}
+              <img
+                src="/images/home/ic-cross-circle.svg"
+                alt="Delete"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(index);
+                }}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  cursor: 'pointer',
+                }}
+              />
+
               {/* 일반 보기 */}
               <div className="text-black">
                 <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
