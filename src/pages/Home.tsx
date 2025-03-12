@@ -48,7 +48,7 @@ const Home: React.FC = () => {
           className="fixed bottom-8 left-8 w-16 h-16 bg-[#DDDDDD] flex items-center justify-center rounded-full shadow-lg"
           onClick={() => handleExport()}
         >
-          <img src='/images/home/ic-export.svg'/>
+          <img src={`${process.env.PUBLIC_URL}/images/home/ic-export.svg`} />
         </button>
 
         {/* 플로팅 버튼 */}
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
           className="fixed bottom-8 right-8 w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg"
           onClick={() => setIsModalOpen(true)}
         >
-          <img src='/images/home/ic-plus.svg'/>
+          <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
         </button>
 
         <ToastContainer />
