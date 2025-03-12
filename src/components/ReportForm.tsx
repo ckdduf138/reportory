@@ -21,7 +21,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, onSubmit, onClose }) =
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    setStartTime(reports[reports.length - 1].endTime);
+    setStartTime(reports.length > 1 ? reports[reports.length - 1].endTime : '00:00');
 
     const currentTime = new Date();
     setEndTime(`${currentTime.getHours()}:${currentTime.getMinutes()}`);
