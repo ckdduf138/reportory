@@ -51,7 +51,7 @@ export const copyReport = () => {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(reportText)
       .then(() => {
-        toast.success('모든 리포트 내용이 클립보드에 복사되었습니다!', {
+        toast.success('클립보드에 복사되었어요.', {
           position: 'top-center',
           autoClose: 3000,
           hideProgressBar: true,
@@ -62,8 +62,7 @@ export const copyReport = () => {
         });
       })
       .catch((error) => {
-        console.error('클립보드 복사 실패:', error);
-        toast.error('복사하는데 실패했습니다. 다시 시도해주세요.', {
+        toast.error('클립보드에 복사를 실패했어요.', {
           position: 'top-center',
           autoClose: 3000,
           hideProgressBar: true,
@@ -74,7 +73,7 @@ export const copyReport = () => {
         });
       });
   } else {
-    toast.error('클립보드 접근 권한이 필요합니다. 다시 시도해주세요.', {
+    toast.error('클립보드에 복사를 실패했어요.', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
