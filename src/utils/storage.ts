@@ -29,17 +29,41 @@ export const deleteDatabase = (): Promise<void> => {
     const request = indexedDB.deleteDatabase(DB_NAME);
 
     request.onsuccess = () => {
-      console.log(`IndexedDB "${DB_NAME}" 삭제 완료`);
+      toast.warning("초기화 했어요.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          fontSize: '16px',
+          width: '90%',
+        },
+      });
       resolve();
     };
 
     request.onerror = (event) => {
-      console.error(`IndexedDB "${DB_NAME}" 삭제 실패`, event);
+      toast.warning("초기화하는데 실패했어요. 다시 시도해주세요.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          fontSize: '16px',
+          width: '90%',
+        },
+      });
       reject(request.error);
     };
 
     request.onblocked = () => {
-      console.warn(`⚠️ IndexedDB "${DB_NAME}" 삭제가 다른 탭에서 사용 중이라 지연됨`);
+      toast.warning("초기화하는데 실패했어요. 다시 시도해주세요.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          fontSize: '16px',
+          width: '90%',
+        },
+      });
     };
   });
 };
@@ -112,7 +136,7 @@ export const copyReport = async () => {
     }
   } catch (error) {
     console.error("클립보드 복사 실패:", error);
-    toast.error("클립보드에 복사하는데 실패했어요..", {
+    toast.error("클립보드에 복사하는데 실패했어요.", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: true,
