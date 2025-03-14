@@ -7,14 +7,16 @@ import { Report } from '../types/Report';
 interface ReportViewerProps {
   reports: Report[];
   delete_report: (id: string) => void;
+  edit_report: (report: Report) => void;
 }
 
-const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) => {
+const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edit_report }) => {
   const [expandedReportIndex, setExpandedReportIndex] = useState<number | null>(null);
 
-  const handleClick = (index: number) => {
+  const handleClick = (index: number, report: Report) => {
     if (expandedReportIndex === index) {
       setExpandedReportIndex(null);
+      edit_report(report);
     } else {
       setExpandedReportIndex(index);
     }
@@ -36,7 +38,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
               className={`flex flex-col p-2 rounded mb-2 cursor-pointer transition-all duration-300 ease-in-out border-2 ${
                 expandedReportIndex === index ? 'border-black' : 'border-transparent'
               } bg-gray-100`}
-              onClick={() => handleClick(index)}
+              onClick={() => handleClick(index, report)}
               style={{
                 height: expandedReportIndex === index ? 'auto' : '60px',
                 overflow: 'hidden',

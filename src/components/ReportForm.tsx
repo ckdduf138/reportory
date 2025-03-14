@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-
 import { Report } from '../types/Report';
 
 interface ReportFormProps {
-  reports: Report[];
   isOpen: boolean;
+  reports: Report[];
+  editReport?: Report;
   onSubmit: (report: Report) => void;
   onClose: () => void;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onClose }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialReport, isOpen, onSubmit, onClose }) => {
   const [scale, setScale] = useState(0.5);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [content, setContent] = useState('');
+  const [startTime, setStartTime] = useState(initialReport?.startTime || '');
+  const [endTime, setEndTime] = useState(initialReport?.endTime || '');
+  const [content, setContent] = useState(initialReport?.content || '');
 
   useEffect(() => {
     if (isOpen) {
@@ -24,23 +24,29 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onCl
   }, [isOpen]);
 
   useEffect(() => {
-    setStartTime(reports.length > 0 ? reports[reports.length - 1].endTime : '00:00');
+    if (!initialReport) {
+      setStartTime(reports.length > 0 ? reports[reports.length - 1].endTime : '00:00');
 
-    const currentTime = new Date();
-    const formattedTime = `${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}`;
-    setEndTime(formattedTime);
-  }, [reports]);
+      const currentTime = new Date();
+      setEndTime(`${currentTime.getHours()}:${currentTime.getMinutes()}`);
+    }
+  }, [reports, initialReport]);
 
   const handleSubmit = () => {
     if (startTime && endTime && content.trim()) {
-      onSubmit({startTime: startTime, endTime: endTime, content: content} as Report);
-      setStartTime('');
-      setEndTime('');
-      setContent('');
+      onSubmit({
+        ...initialReport,
+        startTime,
+        endTime,
+        content,
+      } as Report);
+
+      onClose();
     }
   };
 
   const isFormValid = startTime && endTime && content.trim();
+  const title = initialReport ? '리포트 수정하기' : '리포트 추가하기';
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
@@ -49,8 +55,8 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onCl
           transform: `scale(${scale})`,
           transition: 'transform 0.3s ease',
         }}>
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">리포트 추가하기</h2>
-        
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>
+
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700">시작 시간</label>
           <input
@@ -97,7 +103,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onCl
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
           >
-            저장
+            {initialReport ? '수정' : '저장'}
           </button>
         </div>
       </div>

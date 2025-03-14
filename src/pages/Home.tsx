@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
+import { ToastContainer } from 'react-toastify';
+
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
 
+import { generateUUID } from '../utils/transalte';
 import { deleteDatabase, deleteReport, getReports, saveReport, copyReport } from '../utils/storage';
-import { ToastContainer } from 'react-toastify';
 
 import { Report } from '../types/Report';
-import { generateUUID } from '../utils/transalte';
 
 const Home: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
+  const [editReport, setEditReport] = useState<Report>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -21,8 +23,19 @@ const Home: React.FC = () => {
     fetchReports();
   }, []);
   
-  const handleAddReport = async (report: Report) => {
-    report.id = generateUUID();
+  const handleAddReport = () => {
+    setEditReport(undefined);
+    setIsModalOpen(true);
+  };
+  
+  const handleExport = () => {
+    copyReport();
+  };
+
+  const handleSaveReport = async (report: Report) => {
+    if(!report.id) {
+      report.id = generateUUID();
+    }
 
     await saveReport(report);
     const data = await getReports();
@@ -31,14 +44,16 @@ const Home: React.FC = () => {
     setIsModalOpen(false);
   };
   
+  const handleEdit = async (report: Report) => {
+    setEditReport(report);
+
+    setIsModalOpen(true);
+  };
+
   const handleDelete = async (id: string) => {
     await deleteReport(id);
     const data = await getReports();
     setReports(data);
-  };
-
-  const handleExport = () => {
-    copyReport();
   };
 
   const deleteAndReload = async () => {
@@ -54,6 +69,7 @@ const Home: React.FC = () => {
         <ReportViewer 
           reports={reports} 
           delete_report={handleDelete}
+          edit_report={handleEdit}
         />
 
         {/* 초기화 버튼 */}
@@ -75,7 +91,7 @@ const Home: React.FC = () => {
         {/* 플로팅 버튼 */}
         <button
           className="fixed bottom-8 right-8 w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => handleAddReport()}
         >
           <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
         </button>
@@ -84,11 +100,12 @@ const Home: React.FC = () => {
           <ReportForm
             isOpen={isModalOpen}
             reports={reports}
-            onSubmit={handleAddReport}
+            editReport={editReport}
+            onSubmit={handleSaveReport}
             onClose={() => setIsModalOpen(false)}
           />
         )}
-
+        
         <ToastContainer />
       </div>
     </div>
