@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { formatTime } from '../utils/transalte';
 
-import { Report } from '../types/Report';
+import { Report } from '../types/Common';
 
 interface ReportViewerProps {
   reports: Report[];

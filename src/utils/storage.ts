@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { formatTime } from "./transalte";
-import { Report } from "../types/Report";
+import { DatabaseStatus, Report } from "../types/Common";
 
 const DB_NAME = "DailyReportDB";
 const STORE_NAME = "reports";
@@ -24,46 +24,20 @@ const openDB = (): Promise<IDBDatabase> => {
 };
 
 // IndexedDB 삭제
-export const deleteDatabase = (): Promise<void> => {
+export const deleteDatabase = (): Promise<DatabaseStatus> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.deleteDatabase(DB_NAME);
 
     request.onsuccess = () => {
-      toast.warning("초기화 했어요.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        style: {
-          fontSize: '16px',
-          width: '90%',
-        },
-      });
-      resolve();
+      resolve("success");
     };
 
-    request.onerror = (event) => {
-      toast.warning("초기화하는데 실패했어요. 다시 시도해주세요.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        style: {
-          fontSize: '16px',
-          width: '90%',
-        },
-      });
-      reject(request.error);
+    request.onerror = (e) => {
+      reject("error");
     };
 
     request.onblocked = () => {
-      toast.warning("초기화하는데 실패했어요. 다시 시도해주세요.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        style: {
-          fontSize: '16px',
-          width: '90%',
-        },
-      });
+      resolve("success");
     };
   });
 };
@@ -77,6 +51,8 @@ export const saveReport = async (report: Report) => {
   const newReport = report;
 
   store.put(newReport);
+
+  db.close();
 };
 
 
@@ -92,10 +68,12 @@ export const getReports = async (): Promise<Report[]> => {
 
     request.onsuccess = () => {
       resolve(request.result);
+      db.close();
     };
 
     request.onerror = () => {
       reject(request.error);
+      db.close();
     };
   });
 };
@@ -107,6 +85,8 @@ export const deleteReport = async (id: string) => {
   const store = tx.objectStore(STORE_NAME);
 
   store.delete(id);
+
+  db.close();
 };
 
 // 리포트 복사

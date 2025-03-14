@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
+import Loader from '../components/Loader';
 
 import { generateUUID } from '../utils/transalte';
 import { deleteDatabase, deleteReport, getReports, saveReport, copyReport } from '../utils/storage';
 
-import { Report } from '../types/Report';
+import { Report } from '../types/Common';
+
 
 const Home: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [editReport, setEditReport] = useState<Report>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchReports();
@@ -39,9 +43,8 @@ const Home: React.FC = () => {
     }
 
     await saveReport(report);
-    const data = await getReports();
+    await fetchReports();
 
-    setReports(data);
     setIsModalOpen(false);
   };
   
@@ -53,13 +56,59 @@ const Home: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     await deleteReport(id);
-    const data = await getReports();
-    setReports(data);
+    fetchReports();
   };
 
   const deleteAndReload = async () => {
-    await deleteDatabase();
-    fetchReports();
+    if(reports.length === 0) {
+      toast.warning("삭제할 데이터가 없어요.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          fontSize: '16px',
+          width: '90%',
+        },
+      });
+
+      return;
+    }
+
+    setIsLoading(true);
+    const status = await deleteDatabase();
+
+    switch(status) {
+      case "success":
+        await fetchReports();
+
+        toast.success("모두 삭제되었어요.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          style: {
+            fontSize: '16px',
+            width: '90%',
+          },
+        });
+        
+        setIsLoading(false);
+        break;
+      case "error":
+        toast.error("잠시 후 다시 시도해주세요.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          style: {
+            fontSize: '16px',
+            width: '90%',
+          },
+        });
+
+        setIsLoading(false);
+        break;
+      case "loading":
+        break;
+    }
   };
   
   return (
@@ -105,6 +154,8 @@ const Home: React.FC = () => {
         )}
         
         <ToastContainer />
+
+        {isLoading && <Loader />}
       </div>
     </div>
   );

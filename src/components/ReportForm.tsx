@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Report } from '../types/Report';
+import { Report } from '../types/Common';
 
 interface ReportFormProps {
   isOpen: boolean;
