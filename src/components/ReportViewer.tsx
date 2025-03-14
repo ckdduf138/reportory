@@ -33,44 +33,44 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report }) =
           {reports.map((report, index) => (
             <li
               key={index}
-              className={`flex flex-col bg-gray-100 p-2 rounded mb-2 cursor-pointer transition-all duration-300 ease-in-out ${
-                expandedReportIndex === index ? 'bg-gray-300' : ''
-              }`}
+              className={`flex flex-col p-2 rounded mb-2 cursor-pointer transition-all duration-300 ease-in-out border-2 ${
+                expandedReportIndex === index ? 'border-black' : 'border-transparent'
+              } bg-gray-100`}
               onClick={() => handleClick(index)}
               style={{
-                backgroundColor: expandedReportIndex === index ? '#F6F8F9' : '',
                 height: expandedReportIndex === index ? 'auto' : '60px',
                 overflow: 'hidden',
                 position: 'relative',
               }}
             >
 
-              {/* 리포트 삭제 버튼 */}
-              <img
-                src={`${process.env.PUBLIC_URL}/images/home/ic-cross-circle.svg`}
-                alt="Delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(report.id);
-                }}
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '8px',
-                  cursor: 'pointer',
-                }}
-              />
+            {/* 일반 보기 */}
+            <div className="text-black">
+              <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
+              <p>{expandedReportIndex !== index ? report.content.slice(0, 50) : ''}</p>
+            </div>
 
-              {/* 일반 보기 */}
-              <div className="text-black">
-                <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
-                <p>{expandedReportIndex !== index ? report.content.slice(0, 50) : ''}</p>
-              </div>
+            {/* 상세보기 */}
+            {expandedReportIndex === index && (
+              <p>{report.content}</p>
+            )}
 
-              {/* 상세보기 */}
-              {expandedReportIndex === index && (
-                <p>{report.content}</p>
-              )}
+            
+            {/* 리포트 삭제 버튼 */}
+            <img
+              src={`${process.env.PUBLIC_URL}/images/home/ic-cross-circle.svg`}
+              alt="Delete"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(report.id);
+              }}
+              style={{
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                cursor: 'pointer',
+              }}
+            />
             </li>
           ))}
         </ul>
