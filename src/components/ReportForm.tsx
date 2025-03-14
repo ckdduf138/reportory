@@ -27,7 +27,8 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, isOpen, onSubmit, onCl
     setStartTime(reports.length > 0 ? reports[reports.length - 1].endTime : '00:00');
 
     const currentTime = new Date();
-    setEndTime(`${currentTime.getHours()}:${currentTime.getMinutes()}`);
+    const formattedTime = `${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}`;
+    setEndTime(formattedTime);
   }, [reports]);
 
   const handleSubmit = () => {
