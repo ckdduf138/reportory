@@ -63,7 +63,7 @@ const Home: React.FC = () => {
   
   return (
     <div className="min-h-screen flex items-start justify-center relative">
-      <div className="p-6 w-full max-w-7xl">
+      <div className="p-6 pb-24 w-full max-w-7xl">
         <h1 className="text-2xl font-bold mb-4 text-center text-black">Daily Report</h1>
 
         <ReportViewer 
@@ -72,29 +72,26 @@ const Home: React.FC = () => {
           edit_report={handleEdit}
         />
 
-        {/* 초기화 버튼 */}
-        <button
-          className="fixed top-6 right-6 w-16 h-8 bg-[#DDDDDD] flex items-center justify-center shadow-lg"
-          onClick={() => deleteAndReload()}
-        >
-          초기화
-        </button>
+        {/* 하단 고정 바 */}
+        <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
+          {/* 초기화 버튼 */}
+          <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" onClick={deleteAndReload}>
+            <img src={`${process.env.PUBLIC_URL}/images/home/ic-trash.svg`} />
+          </button>
 
-        {/* 업로드 버튼 */}
-        <button
-          className="fixed bottom-8 left-8 w-16 h-16 bg-[#DDDDDD] flex items-center justify-center rounded-full shadow-lg"
-          onClick={() => handleExport()}
-        >
-          <img src={`${process.env.PUBLIC_URL}/images/home/ic-export.svg`} />
-        </button>
+          {/* 추가 버튼 (플로팅) */}
+          <button
+            className="w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg absolute left-1/2 transform -translate-x-1/2"
+            onClick={handleAddReport}
+          >
+            <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
+          </button>
 
-        {/* 플로팅 버튼 */}
-        <button
-          className="fixed bottom-8 right-8 w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg"
-          onClick={() => handleAddReport()}
-        >
-          <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
-        </button>
+          {/* 업로드 버튼 */}
+          <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" onClick={handleExport}>
+            <img src={`${process.env.PUBLIC_URL}/images/home/ic-export.svg`} />
+          </button>
+        </div>
 
         {isModalOpen && (
           <ReportForm
