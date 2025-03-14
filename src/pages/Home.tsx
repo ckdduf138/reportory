@@ -16,13 +16,14 @@ const Home: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchReports = async () => {
-      const data = await getReports();
-      setReports(data);
-    };
     fetchReports();
   }, []);
   
+  const fetchReports = async () => {
+    const data = await getReports();
+    setReports(data);
+  };
+
   const handleAddReport = () => {
     setEditReport(undefined);
     setIsModalOpen(true);
@@ -58,7 +59,7 @@ const Home: React.FC = () => {
 
   const deleteAndReload = async () => {
     await deleteDatabase();
-    window.location.reload();
+    fetchReports();
   };
   
   return (
