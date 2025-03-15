@@ -106,7 +106,7 @@ export const copyReport = async () => {
     else {
       toast.info("먼저 기록해주세요.", {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 2000,
         hideProgressBar: true,
         style: {
           fontSize: '16px',
@@ -118,7 +118,7 @@ export const copyReport = async () => {
     console.error("클립보드 복사 실패:", error);
     toast.error("클립보드에 복사하는데 실패했어요.", {
       position: "top-center",
-      autoClose: 3000,
+      autoClose: 2000,
       hideProgressBar: true,
       style: {
         fontSize: '16px',

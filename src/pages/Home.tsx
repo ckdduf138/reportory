@@ -64,7 +64,7 @@ const Home: React.FC = () => {
     if(reports.length === 0) {
       toast.warning("삭제할 데이터가 없어요.", {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 2000,
         hideProgressBar: true,
         style: {
           fontSize: '16px',
@@ -84,7 +84,7 @@ const Home: React.FC = () => {
 
         toast.success("모두 삭제되었어요.", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 2000,
           hideProgressBar: true,
           style: {
             fontSize: '16px',
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
       case "error":
         toast.error("잠시 후 다시 시도해주세요.", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 2000,
           hideProgressBar: true,
           style: {
             fontSize: '16px',
