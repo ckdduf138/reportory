@@ -34,7 +34,7 @@ const SidebarMenu: React.FC = () => {
         </button>
 
         {/* 메뉴 리스트 */}
-        <nav className="flex flex-col gap-4 p-2 text-gray-800">
+        <nav className="flex flex-col gap-2 p-2 text-gray-800">
           <NavItem label="카테고리" iconSrc={`${process.env.PUBLIC_URL}/images/home/ic-tag.svg`} onClicked={() => {}}/>
           <NavItem label="분석" iconSrc={`${process.env.PUBLIC_URL}/images/home/ic-bar-chart-square-up-01.svg`} onClicked={() => {}}/>
           <NavItem label="공유" iconSrc={`${process.env.PUBLIC_URL}/images/home/ic-export.svg`} onClicked={() => {handleExport()}}/>
