@@ -132,15 +132,10 @@ const Home: React.FC = () => {
 
           {/* 추가 버튼 (플로팅) */}
           <button
-            className="w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg absolute left-1/2 transform -translate-x-1/2"
+            className="w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg right-0"
             onClick={handleAddReport}
           >
             <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
-          </button>
-
-          {/* 업로드 버튼 */}
-          <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" onClick={handleExport}>
-            <img src={`${process.env.PUBLIC_URL}/images/home/ic-export.svg`} />
           </button>
         </div>
 
