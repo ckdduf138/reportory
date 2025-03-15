@@ -19,8 +19,10 @@ const SidebarMenu: React.FC = () => {
       >
         <h1 className="flex p-4 text-2xl font-bold text-center text-black">Daily Report</h1>
 
+        <div className="border-t border-gray-300 my-4 mx-3" />
+
         <button
-          className="absolute top-4 right-4 p-2 rounded-md text-gray-800"
+          className="absolute top-4 right-4 p-1 rounded-md text-gray-800"
           onClick={() => setIsOpen(false)}
         >
           <img src={`${process.env.PUBLIC_URL}/images/home/ic-x-02.svg`} />
