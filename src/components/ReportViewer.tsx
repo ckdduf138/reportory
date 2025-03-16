@@ -39,8 +39,8 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
           {reports.map((report, index) => (
             <li
               key={index}
-              className={`relative flex flex-col p-3 rounded cursor-pointer border-2 bg-gray-100 overflow-hidden
-                ${expandedReportIndex === index ? 'border-black' : 'border-transparent'}`}
+              className={`relative flex flex-col p-3 rounded cursor-pointer border-2 bg-gray-100 transition-all duration-300 ease-in-out
+                ${expandedReportIndex === index ? 'border-black max-h-screen' : 'border-transparent max-h-[76px]'} `}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick(index, report);

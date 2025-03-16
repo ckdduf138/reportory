@@ -122,7 +122,7 @@ const Home: React.FC = () => {
         <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
           {/* 초기화 버튼 */}
           <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" onClick={deleteAndReload}>
-            <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash.svg`} />
+            <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
           </button>
 
           {/* 추가 버튼 (플로팅) */}
