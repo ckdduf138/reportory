@@ -22,6 +22,10 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
     }
   };
 
+  const handleEdit = (report: Report) => {
+    edit_report(report);
+  };
+
   const handleDelete = (id: string) => {
     delete_report(id);
   };
@@ -31,48 +35,40 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
       {reports.length === 0 ? (
         <p className="text-center text-gray-500">오늘 하루도 기록해봅시다.</p>
       ) : (
-        <ul className="mt-2">
+        <ul className="flex flex-col gap-2">
           {reports.map((report, index) => (
             <li
               key={index}
-              className={`flex flex-col p-2 rounded mb-2 cursor-pointer transition-all duration-300 ease-in-out border-2 ${
-                expandedReportIndex === index ? 'border-black' : 'border-transparent'
-              } bg-gray-100`}
-              onClick={() => handleClick(index, report)}
-              style={{
-                height: expandedReportIndex === index ? 'auto' : '60px',
-                overflow: 'hidden',
-                position: 'relative',
-              }}
-            >
-
-            {/* 일반 보기 */}
-            <div className="text-black">
-              <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
-              <p>{expandedReportIndex !== index ? report.content.slice(0, 50) : ''}</p>
-            </div>
-
-            {/* 상세보기 */}
-            {expandedReportIndex === index && (
-              <p>{report.content}</p>
-            )}
-
-            
-            {/* 리포트 삭제 버튼 */}
-            <img
-              src={`${process.env.PUBLIC_URL}/images/home/ic-cross-circle.svg`}
-              alt="Delete"
+              className={`relative flex flex-col p-3 rounded cursor-pointer border-2 bg-gray-100 overflow-hidden
+                ${expandedReportIndex === index ? 'border-black' : 'border-transparent'}`}
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(report.id);
-              }}
-              style={{
-                position: 'absolute',
-                top: '8px',
-                right: '8px',
-                cursor: 'pointer',
-              }}
-            />
+                handleClick(index, report);
+              }}>
+
+              <div className="text-black">
+                <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
+                <p className={`${expandedReportIndex === index ? '' : 'truncate line-clamp-1'}`}>{report.content}</p>
+              </div>
+              
+              {/* 리포트 수정 삭제 버튼 */}
+              <div className="flex absolute top-1.5 right-1.5 gap-2 cursor-pointer">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEdit(report);
+                  }}>
+                  <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
+                </button>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(report.id);
+                  }}>
+                  <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -65,11 +65,11 @@ export default function CategoryPage() {
           <li key={category.id} className="flex justify-between items-center py-3 px-4">
             <span className="text-gray-900 font-medium">{category.name}</span>
             <div className="flex gap-3">
-              <button onClick={() => openModal(category)} className="text-gray-500 hover:text-blue-500 transition">
-                <img src={`${process.env.PUBLIC_URL}/images/category/ic-edit-02.svg`} />
+              <button onClick={() => openModal(category)}>
+                <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
               </button>
-              <button onClick={() => deleteCategory(category.id)} className="text-gray-500 hover:text-red-500 transition">
-              <img src={`${process.env.PUBLIC_URL}/images/category/ic-trash-02.svg`} />
+              <button onClick={() => deleteCategory(category.id)}>
+                <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
               </button>
             </div>
           </li>

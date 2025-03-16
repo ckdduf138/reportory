@@ -23,7 +23,7 @@ const SidebarMenu: React.FC = () => {
     <>
       {/* 햄버거 버튼 */}
       <button
-        className="fixed top-4 left-4 p-2 z-70"
+        className="absolute top-4 left-4 p-2 z-70"
         onClick={() => setIsOpen(true)}
       >
         <img src={`${process.env.PUBLIC_URL}/images/menu/ic-menu.svg`} />

@@ -12,7 +12,6 @@ import { deleteDatabase, deleteReport, getReports, saveReport, copyReport } from
 import { Report } from '../types/Common';
 import SidebarMenu from '../components/SidebarMenu';
 
-
 const Home: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [editReport, setEditReport] = useState<Report>();
@@ -32,10 +31,6 @@ const Home: React.FC = () => {
   const handleAddReport = () => {
     setEditReport(undefined);
     setIsModalOpen(true);
-  };
-  
-  const handleExport = () => {
-    copyReport();
   };
 
   const handleSaveReport = async (report: Report) => {
@@ -127,7 +122,7 @@ const Home: React.FC = () => {
         <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
           {/* 초기화 버튼 */}
           <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" onClick={deleteAndReload}>
-            <img src={`${process.env.PUBLIC_URL}/images/home/ic-trash.svg`} />
+            <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash.svg`} />
           </button>
 
           {/* 추가 버튼 (플로팅) */}
