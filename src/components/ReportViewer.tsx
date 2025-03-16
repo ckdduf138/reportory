@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { formatTime } from '../utils/transalte';
 
 import { Report } from '../types/Common';
+import Category from './Category';
 
 interface ReportViewerProps {
   reports: Report[];
@@ -42,18 +43,22 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
         <ul className="flex flex-col gap-2">
           {reports.map((report, index) => (
             <li className={`relative flex flex-col min-w-[300px] p-3 rounded cursor-pointer border-2 bg-gray-100 transition-all duration-300 ease-in-out
-              ${expandedReportIndex === index ? 'border-black max-h-screen' : 'border-transparent max-h-[76px]'} `}
+              ${expandedReportIndex === index ? 'border-black max-h-screen' : 'border-transparent'} `}
               key={index}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick(index, report);
               }}>
 
+              {/* 리포트 내용 */}
               <div className="text-black">
                 <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
                 <p className={`${expandedReportIndex === index ? '' : 'truncate line-clamp-1'}`}>{report.content}</p>
+                {report.category && 
+                  <Category>{report.category}</Category>
+                }
               </div>
-              
+            
               {/* 리포트 수정 삭제 버튼 */}
               <div className="flex absolute top-1.5 right-1.5 gap-2 cursor-pointer">
                 <button
