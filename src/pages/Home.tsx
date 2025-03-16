@@ -139,6 +139,10 @@ const Home: React.FC = () => {
           </button>
         </div>
 
+        <ToastContainer />
+        <SidebarMenu />
+
+        {/* 리포트 추가하는 모달창 */}
         {isModalOpen && (
           <ReportForm
             isOpen={isModalOpen}
@@ -148,9 +152,6 @@ const Home: React.FC = () => {
             onClose={() => setIsModalOpen(false)}
           />
         )}
-        
-        <SidebarMenu />
-        <ToastContainer />
 
         {isLoading && <Loader />}
       </div>

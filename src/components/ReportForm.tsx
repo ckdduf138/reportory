@@ -50,7 +50,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
   const title = initialReport ? '리포트 수정하기' : '리포트 추가하기';
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md">
       <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-7xl"
         style={{
           transform: `scale(${scale})`,
