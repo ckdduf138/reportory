@@ -15,7 +15,6 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
 
   const handleClick = (index: number, report: Report) => {
     if (expandedReportIndex === index) {
-      setExpandedReportIndex(null);
       edit_report(report);
     } else {
       setExpandedReportIndex(index);
