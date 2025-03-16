@@ -51,10 +51,10 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
   const title = initialReport ? '리포트 수정하기' : '리포트 추가하기';
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md">
-      <div
-        className={`bg-white p-6 rounded-lg shadow-xl w-[80%] max-w-7xl transition-transform duration-300 ease-in-out`}
-        style={{ transform: `scale(${scale})` }}>
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md" onClick={() => onClose()}>
+      <div className={`bg-white p-6 rounded-lg shadow-xl w-[80%] max-w-7xl transition-transform duration-300 ease-in-out`}
+        style={{ transform: `scale(${scale})` }}
+        onClick={(e) => {e.stopPropagation()}}>
           
         <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>
 

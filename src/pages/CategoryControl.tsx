@@ -87,8 +87,8 @@ export default function CategoryPage() {
 
       {/* 카테고리 추가하는 모달창 */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 border-2 backdrop-blur-md">
-          <div className="bg-white p-6 rounded-lg w-80 shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 border-2 backdrop-blur-md" onClick={() => setIsModalOpen(false)}>
+          <div className="bg-white p-6 rounded-lg w-80 shadow-lg" onClick={(e) => {e.stopPropagation()}}>
             <h3 className="text-lg font-semibold mb-6">{editingCategory ? "카테고리 수정" : "카테고리 추가"}</h3>
             
             <input className="w-full border rounded-lg p-3 focus:outline-none focus:ring-0 focus:border-black"
