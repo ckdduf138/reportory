@@ -83,7 +83,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black h-40 resize-none"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg h-40 resize-none focus:outline-none focus:ring-0 focus:border-black"
             placeholder="내용을 입력해주세요.."
           />
         </div>
@@ -91,20 +91,16 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
         <div className="flex justify-between items-center mt-6">
           <button
             className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
-            onClick={onClose}
-          >
-            취소
+            onClick={onClose}>취소
           </button>
           <button
-            disabled={!isFormValid}
-            onClick={handleSubmit}
             className={`px-6 py-2 rounded-lg shadow-md transition duration-300 ${
               isFormValid
                 ? 'bg-gray-700 hover:bg-gray-800 text-white'
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
-          >
-            {initialReport ? '수정' : '저장'}
+            disabled={!isFormValid}
+            onClick={handleSubmit}>{initialReport ? '수정' : '저장'}
           </button>
         </div>
       </div>

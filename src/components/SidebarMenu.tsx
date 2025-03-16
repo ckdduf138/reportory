@@ -57,7 +57,7 @@ const SidebarMenu: React.FC = () => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-60"
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-60"
           onClick={() => setIsOpen(false)}
         ></div>
       )}

@@ -57,10 +57,7 @@ export default function CategoryPage() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-center items-center gap-2">
-        <h1 className="text-2xl font-bold text-center text-black">카테고리 관리</h1>
-        <img src={`${process.env.PUBLIC_URL}/images/menu/ic-tag.svg`} />
-      </div>
+      <h1 className="text-2xl font-bold text-center text-black">카테고리 관리</h1>
 
       {/* 카테고리 리스트 */}
       <ul className="my-6 bg-white rounded-lg shadow-md divide-y">
@@ -88,24 +85,34 @@ export default function CategoryPage() {
       </button>
 
       <SidebarMenu />
-      
+
       {/* 카테고리 추가하는 모달창 */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 border-2 backdrop-blur-md">
           <div className="bg-white p-6 rounded-lg w-80 shadow-lg">
-            <h3 className="text-lg font-semibold mb-4">{editingCategory ? "카테고리 수정" : "카테고리 추가"}</h3>
+            <h3 className="text-lg font-semibold mb-6">{editingCategory ? "카테고리 수정" : "카테고리 추가"}</h3>
             
             <input
               type="text"
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-0 focus:border-black"
               placeholder="카테고리 이름 입력.."
             />
 
-            <div className="flex justify-end gap-2 mt-4">
-              <button className="text-gray-500 hover:text-gray-700" onClick={closeModal}>취소</button>
-              <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900" onClick={saveCategory}>저장</button>
+            <div className="flex justify-between items-center mt-6">
+              <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300" 
+                onClick={closeModal}>취소
+              </button>
+              <button
+                className={`px-6 py-2 rounded-lg shadow-md transition duration-300 ${
+                  categoryName
+                    ? 'bg-gray-700 hover:bg-gray-800 text-white'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+                disabled={!categoryName}
+                onClick={saveCategory}>저장
+              </button>
             </div>
           </div>
         </div>
