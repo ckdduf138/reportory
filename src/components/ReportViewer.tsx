@@ -37,13 +37,13 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
     <div>
       {reports.length === 0 ? (
         <p className="text-center text-gray-500">오늘 하루도 기록해봅시다.</p>
-      ) : (
+      ) : 
+      (
         <ul className="flex flex-col gap-2">
           {reports.map((report, index) => (
-            <li
+            <li className={`relative flex flex-col min-w-[300px] p-3 rounded cursor-pointer border-2 bg-gray-100 transition-all duration-300 ease-in-out
+              ${expandedReportIndex === index ? 'border-black max-h-screen' : 'border-transparent max-h-[76px]'} `}
               key={index}
-              className={`relative flex flex-col p-3 rounded cursor-pointer border-2 bg-gray-100 transition-all duration-300 ease-in-out
-                ${expandedReportIndex === index ? 'border-black max-h-screen' : 'border-transparent max-h-[76px]'} `}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick(index, report);

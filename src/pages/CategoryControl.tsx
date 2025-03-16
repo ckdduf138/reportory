@@ -77,8 +77,7 @@ export default function CategoryPage() {
       </ul>
 
       {/* 카테고리 추가 버튼 */}
-      <button 
-        className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-lg font-semibold active:scale-95 transition"
+      <button className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-lg font-semibold active:scale-95 transition"
         onClick={() => openModal()}
       >
         <img src={`${process.env.PUBLIC_URL}/images/category/ic-plus-02.svg`} /> 카테고리 추가
@@ -92,11 +91,10 @@ export default function CategoryPage() {
           <div className="bg-white p-6 rounded-lg w-80 shadow-lg">
             <h3 className="text-lg font-semibold mb-6">{editingCategory ? "카테고리 수정" : "카테고리 추가"}</h3>
             
-            <input
-              type="text"
+            <input className="w-full border rounded-lg p-3 focus:outline-none focus:ring-0 focus:border-black"
+              type="text" 
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-0 focus:border-black"
               placeholder="카테고리 이름 입력.."
             />
 
@@ -104,12 +102,8 @@ export default function CategoryPage() {
               <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300" 
                 onClick={closeModal}>취소
               </button>
-              <button
-                className={`px-6 py-2 rounded-lg shadow-md transition duration-300 ${
-                  categoryName
-                    ? 'bg-gray-700 hover:bg-gray-800 text-white'
-                    : 'bg-gray-300 cursor-not-allowed'
-                }`}
+              <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 
+                ${categoryName ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
                 disabled={!categoryName}
                 onClick={saveCategory}>저장
               </button>

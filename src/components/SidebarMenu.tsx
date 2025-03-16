@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { copyReport } from '../utils/storage';
 import { useNavigate } from 'react-router-dom';
+
+import { copyReport } from '../utils/storage';
 
 const SidebarMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,7 @@ const SidebarMenu: React.FC = () => {
   const navigate = useNavigate();
 
   const handleHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const handleCategory = () => {
@@ -24,23 +25,21 @@ const SidebarMenu: React.FC = () => {
       {/* 햄버거 버튼 */}
       <button
         className="absolute top-4 left-4 p-2 z-70"
-        onClick={() => setIsOpen(true)}
-      >
+        onClick={() => setIsOpen(true)}>
         <img src={`${process.env.PUBLIC_URL}/images/menu/ic-menu.svg`} />
       </button>
 
       {/* 사이드바 */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
-      >
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <h1 className="flex p-4 text-2xl font-bold text-center text-black">Daily Report</h1>
 
         <div className="border-t border-gray-300 mb-2 mx-3" />
 
         <button
           className="absolute top-4 right-4 p-1 rounded-md text-gray-800"
-          onClick={() => setIsOpen(false)}
-        >
+          onClick={() => setIsOpen(false)}>
           <img src={`${process.env.PUBLIC_URL}/images/menu/ic-x-02.svg`} />
         </button>
 
@@ -77,16 +76,12 @@ const NavItem: React.FC<NavItemProps> = ({ label, iconSrc, onClicked }) => {
   };
 
   return (
-    <div
-      className="relative flex flex-row p-2 gap-4 items-center group"
-      onClick={onClicked}
-    >
+    <div className="relative flex flex-row p-2 gap-4 items-center group"
+      onClick={handleClick}>
       <img src={iconSrc} />
       <div>{label}</div>
-      <div
-        className="absolute inset-0 h-full z-[-1] rounded-lg transform scale-x-0 bg-white transition-all duration-100 ease-in-out 
-        group-active:scale-x-100 group-active:opacity-100 opacity-0  group-active:filter group-active:brightness-90"
-      />
+      <div className="absolute inset-0 h-full z-[-1] rounded-lg transform scale-x-0 bg-white transition-all duration-100 ease-in-out 
+        group-active:scale-x-100 group-active:opacity-100 opacity-0  group-active:filter group-active:brightness-90"/>
     </div>
   );
 };

@@ -8,6 +8,7 @@ const App: React.FC = () => {
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/category' element={<CategoryControl />} />
       </Routes>
     </Router>
