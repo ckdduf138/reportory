@@ -26,7 +26,11 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
     edit_report(report);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (index: number, id: string) => {
+    if(index === expandedReportIndex) {
+      setExpandedReportIndex(null);
+    }
+  
     delete_report(id);
   };
 
@@ -64,7 +68,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDelete(report.id);
+                    handleDelete(index, report.id);
                   }}>
                   <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
                 </button>
