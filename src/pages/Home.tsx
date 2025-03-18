@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-import { toast, ToastContainer } from 'react-toastify';
-
 import ReportForm from '../components/ReportForm';
 import ReportViewer from '../components/ReportViewer';
 import SidebarMenu from '../components/SidebarMenu';
 import Loader from '../components/Loader';
+import Modal from '../components/Modal';
 
 import { generateUUID } from '../utils/transalte';
 import { deleteDatabase, deleteReport, getReports, saveReport } from '../utils/storage';
 
 import { Report } from '../types/Common';
-
+import { toast } from '../components/toastContainer';
 
 const Home: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [editReport, setEditReport] = useState<Report>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,21 +56,8 @@ const Home: React.FC = () => {
     fetchReports();
   };
 
-  const deleteAndReload = async () => {
-    if(reports.length === 0) {
-      toast.warning("삭제할 데이터가 없어요.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        style: {
-          fontSize: '16px',
-          width: '90%',
-        },
-      });
-
-      return;
-    }
-
+  const handleDelteAll = async () => {
+    setIsDeleteModalOpen(false);
     setIsLoading(true);
     const status = await deleteDatabase();
 
@@ -78,28 +65,12 @@ const Home: React.FC = () => {
       case "success":
         await fetchReports();
 
-        toast.success("모두 삭제되었어요.", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: true,
-          style: {
-            fontSize: '16px',
-            width: '90%',
-          },
-        });
+        toast.success("모두 삭제되었어요.");
         
         setIsLoading(false);
         break;
       case "error":
-        toast.error("잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: true,
-          style: {
-            fontSize: '16px',
-            width: '90%',
-          },
-        });
+        toast.error("잠시 후 다시 시도해주세요.");
 
         setIsLoading(false);
         break;
@@ -121,7 +92,7 @@ const Home: React.FC = () => {
 
         <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
           <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" 
-            onClick={deleteAndReload}>
+            onClick={() => { reports.length === 0 ? toast.warning("삭제할 리포트가 없어요.") : setIsDeleteModalOpen(true)}}>
             <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
           </button>
 
@@ -131,7 +102,6 @@ const Home: React.FC = () => {
           </button>
         </div>
 
-        <ToastContainer />
         <SidebarMenu />
 
         {/* 리포트 추가하는 모달창 */}
@@ -143,6 +113,13 @@ const Home: React.FC = () => {
             onSubmit={handleSaveReport}
             onClose={() => setIsModalOpen(false)}
           />
+        )}
+
+        {isDeleteModalOpen && (
+          <Modal 
+            content='리포트 전체를 삭제하시겠습니까?'      
+            onClickedCancel={() => setIsDeleteModalOpen(false)}
+            onClickedOk={() => handleDelteAll()}/>
         )}
 
         {isLoading && <Loader />}
