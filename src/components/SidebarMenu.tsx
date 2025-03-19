@@ -18,8 +18,11 @@ const SidebarMenu: React.FC = () => {
     navigate("/category");
   };
 
-  const handleExport = async () => {
+  const handleCopyClipboard = async () => {
     const reports = await getReport();
+    
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}\n\n`;
   
     const reportText = reports.map((report) => {
       const formattedStartTime = formatTime(report.startTime);
@@ -28,16 +31,16 @@ const SidebarMenu: React.FC = () => {
     }).join("");
   
     try {
-      if(reportText !== '') {
-        await navigator.clipboard.writeText(reportText);
-      }
-      else {
+      if (reportText !== '') {
+        await navigator.clipboard.writeText(formattedDate + reportText);
+      } else {
         toast.info('먼저 기록해주세요.');
       }
     } catch (error) {
       toast.error('클립보드에 복사하는데 실패했어요.');
     }
   };
+  
 
   return (
     <>
@@ -67,7 +70,7 @@ const SidebarMenu: React.FC = () => {
           <NavItem label="홈" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-home-05.svg`} onClicked={handleHome}/>
           <NavItem label="카테고리" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-tag.svg`} onClicked={handleCategory}/>
           <NavItem label="분석" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-bar-chart-square-up-01.svg`} onClicked={() => {}}/>
-          <NavItem label="공유" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-export.svg`} onClicked={handleExport}/>
+          <NavItem label="공유" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-export.svg`} onClicked={handleCopyClipboard}/>
           <NavItem label="도움말" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-help-circle-contained.svg`} onClicked={() => {}}/>
           <NavItem label="설정" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-settings.svg`} onClicked={() => {}}/>
         </nav>
