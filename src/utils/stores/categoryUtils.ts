@@ -24,9 +24,14 @@ export const getCategory = async (): Promise<any[]> => {
     let db: IDBDatabase | null = null;
     try {
       db = await openDB();
+
+      console.log(db);
+
       const transaction = db.transaction(CATEGORY_STORE_NAME, 'readonly');
       const objectStore = transaction.objectStore(CATEGORY_STORE_NAME);
       const request = objectStore.getAll();
+
+      console.log(request);
 
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject('잠시 후 다시 시도해주세요.');

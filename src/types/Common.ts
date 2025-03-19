@@ -1,5 +1,3 @@
-export type DatabaseStatus = "success" | "error" | "loading";
-
 export interface Report {
   id: string;
   startTime: string;
@@ -7,4 +5,9 @@ export interface Report {
   content: string;
   category?: string;
   categoryColorCode?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
 }

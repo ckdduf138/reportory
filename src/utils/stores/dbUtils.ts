@@ -1,18 +1,15 @@
-import { formatTime } from "../transalte";
-import { DatabaseStatus, Report } from "../../types/Common";
-import { toast } from "../../components/toastContainer";
-
 const DB_NAME = "DailyReportDB";
 export const REPORT_STORE_NAME = "reports";
 export const CATEGORY_STORE_NAME = "categories";
+const DB_VERSION = 3;
 
 // IndexedDB 열기
 export const openDB = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, 2);
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-    request.onupgradeneeded = () => {
-      const db = request.result;
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
 
       const storeNames = [REPORT_STORE_NAME, CATEGORY_STORE_NAME];
 
@@ -32,8 +29,9 @@ export const openDB = (): Promise<IDBDatabase> => {
   });
 };
 
+
 // IndexedDB 삭제
-export const deleteDatabase = (): Promise<DatabaseStatus> => {
+export const deleteDatabase = (): Promise<string> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.deleteDatabase(DB_NAME);
 

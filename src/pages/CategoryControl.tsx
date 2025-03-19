@@ -1,22 +1,30 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import Loader from "../components/Loader";
+import { toast } from "../components/toastContainer";
 import SidebarMenu from "../components/SidebarMenu";
 
-interface Category {
-  id: number;
-  name: string;
-}
+import { generateUUID } from "../utils/transalte";
+import { createCategory, deleteCategory, getCategory, updateCategory } from "../utils/stores/categoryUtils";
 
-export default function CategoryPage() {
-  const [categories, setCategories] = useState<Category[]>([
-    { id: 1, name: "휴식" },
-    { id: 2, name: "여가" },
-    { id: 3, name: "자기계발" },
-  ]);
+import { Category } from "../types/Common";
 
+const CategoryControl: React.FC = () =>  {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+      fetchReportAll();
+    }, []);
+    
+    const fetchReportAll = async () => {
+      const data = await getCategory();
+      setCategories(data);
+    };
 
   // 모달 열기
   const openModal = (category?: Category) => {
@@ -33,26 +41,47 @@ export default function CategoryPage() {
   };
 
   // 카테고리 저장
-  const saveCategory = () => {
+  const handleSaveCategory = async () => {
     if (!categoryName.trim()) return;
     
-    if (editingCategory) {
-      setCategories((prev) =>
-        prev.map((cat) => (cat.id === editingCategory.id ? { ...cat, name: categoryName } : cat))
-      );
-    } else {
-      setCategories((prev) => [
-        ...prev,
-        { id: Date.now(), name: categoryName },
-      ]);
+    setIsLoading(true);
+    let response: string = '';
+    try {
+      if(editingCategory) {
+        response = await updateCategory({...editingCategory, name: categoryName});
+      }
+      else {
+        const newCategory: Category = {id: generateUUID(), name: categoryName};
+        response = await createCategory(newCategory);
+      }
+  
+      toast.success(response);
+    } catch (error: any) {
+      toast.error(error);
+    }
+    finally {
+      await fetchReportAll();
+      setIsLoading(false);
+      setIsModalOpen(false);
     }
     
     closeModal();
   };
 
   // 카테고리 삭제
-  const deleteCategory = (id: number) => {
-    setCategories((prev) => prev.filter((cat) => cat.id !== id));
+  const handleDeleteCategory = async (id: string) => {
+    setIsLoading(true);
+
+    try {
+      const response = await deleteCategory(id);
+      toast.success(response);
+    } catch (error: any) {
+      toast.error(error);
+    }
+    finally {
+      await fetchReportAll();
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,7 +97,7 @@ export default function CategoryPage() {
               <button onClick={() => openModal(category)}>
                 <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
               </button>
-              <button onClick={() => deleteCategory(category.id)}>
+              <button onClick={() => handleDeleteCategory(category.id)}>
                 <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
               </button>
             </div>
@@ -77,7 +106,7 @@ export default function CategoryPage() {
       </ul>
 
       {/* 카테고리 추가 버튼 */}
-      <button className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-lg font-semibold active:scale-95 transition"
+      <button className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-lg font-semibold transition active:scale-95"
         onClick={() => openModal()}
       >
         <img src={`${process.env.PUBLIC_URL}/images/category/ic-plus-02.svg`} /> 카테고리 추가
@@ -105,13 +134,17 @@ export default function CategoryPage() {
               <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 active:scale-95
                 ${categoryName ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
                 disabled={!categoryName}
-                onClick={saveCategory}>저장
+                onClick={() => handleSaveCategory()}>저장
               </button>
             </div>
           </div>
         </div>
       )}
-      
+
+      {isLoading && <Loader />}
+
     </div>
   );
 }
+
+export default CategoryControl;
