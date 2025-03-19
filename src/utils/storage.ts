@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
 import { formatTime } from "./transalte";
 import { DatabaseStatus, Report } from "../types/Common";
+import { toast } from "../components/toastContainer";
 
 const DB_NAME = "DailyReportDB";
 const STORE_NAME = "reports";
@@ -104,26 +104,10 @@ export const copyReport = async () => {
       await navigator.clipboard.writeText(reportText);
     }
     else {
-      toast.info("먼저 기록해주세요.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        style: {
-          fontSize: '16px',
-          width: '90%',
-        },
-      });
+      toast.info('먼저 기록해주세요.');
     }
   } catch (error) {
     console.error("클립보드 복사 실패:", error);
-    toast.error("클립보드에 복사하는데 실패했어요.", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: true,
-      style: {
-        fontSize: '16px',
-        width: '90%',
-      },
-    });
+    toast.error('클립보드에 복사하는데 실패했어요.');
   }
 };
