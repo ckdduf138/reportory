@@ -56,7 +56,7 @@ export const ToastContainer = () => {
       setToasts([{ id: crypto.randomUUID(), message, type }]);
       setTimeout(() => {
         setToasts([]);
-      }, 2000); 
+      }, 1000); 
     };
 
     return () => {

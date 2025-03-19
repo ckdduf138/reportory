@@ -22,7 +22,8 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
     }
   };
 
-  const handleEdit = (report: Report) => {
+  const handleEdit = (index: number, report: Report) => {
+    setExpandedReportIndex(index);
     edit_report(report);
   };
 
@@ -64,7 +65,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleEdit(report);
+                    handleEdit(index, report);
                   }}>
                   <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
                 </button>

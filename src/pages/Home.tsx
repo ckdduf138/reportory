@@ -7,10 +7,10 @@ import Loader from '../components/Loader';
 import Modal from '../components/Modal';
 
 import { generateUUID } from '../utils/transalte';
-import { deleteDatabase, deleteReport, getReports, saveReport } from '../utils/storage';
 
 import { Report } from '../types/Common';
 import { toast } from '../components/toastContainer';
+import { createReport, deleteAllReports, deleteReport, getReport, updateReport } from '../utils/stores/reportUtils';
 
 const Home: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -21,11 +21,11 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchReports();
+    fetchReportAll();
   }, []);
   
-  const fetchReports = async () => {
-    const data = await getReports();
+  const fetchReportAll = async () => {
+    const data = await getReport();
     setReports(data);
   };
 
@@ -35,47 +35,62 @@ const Home: React.FC = () => {
   };
 
   const handleSaveReport = async (report: Report) => {
-    if(!report.id) {
-      report.id = generateUUID();
+    setIsLoading(true);
+    let response: string = '';
+    try {
+      if(!report.id) {
+        report.id = generateUUID();
+        response = await createReport(report);
+      }
+      else {
+        response = await updateReport(report);
+      }
+  
+      toast.success(response);
+    } catch (error: any) {
+      toast.error(error);
     }
-
-    await saveReport(report);
-    await fetchReports();
-
-    setIsModalOpen(false);
+    finally {
+      await fetchReportAll();
+      setIsLoading(false);
+      setIsModalOpen(false);
+    }
   };
   
-  const handleEdit = async (report: Report) => {
+  const handleUpdateReport = async (report: Report) => {
     setEditReport(report);
 
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteReport(id);
-    fetchReports();
+  const handleDeleteReport = async (id: string) => {
+    setIsLoading(true);
+
+    try {
+      const response = await deleteReport(id);
+      toast.success(response);
+    } catch (error: any) {
+      toast.error(error);
+    }
+    finally {
+      await fetchReportAll();
+      setIsLoading(false);
+    }
   };
 
-  const handleDelteAll = async () => {
+  const handleDeleteAllReport = async () => {
     setIsDeleteModalOpen(false);
     setIsLoading(true);
-    const status = await deleteDatabase();
 
-    switch(status) {
-      case "success":
-        await fetchReports();
-
-        toast.success("모두 삭제되었어요.");
-        
-        setIsLoading(false);
-        break;
-      case "error":
-        toast.error("잠시 후 다시 시도해주세요.");
-
-        setIsLoading(false);
-        break;
-      case "loading":
-        break;
+    try {
+      const response = await deleteAllReports();
+      toast.success(response);
+    } catch (error: any) {
+      toast.error(error);
+    }
+    finally {
+      await fetchReportAll();
+      setIsLoading(false);
     }
   };
   
@@ -86,8 +101,8 @@ const Home: React.FC = () => {
 
         <ReportViewer 
           reports={reports} 
-          delete_report={handleDelete}
-          edit_report={handleEdit}
+          delete_report={handleDeleteReport}
+          edit_report={handleUpdateReport}
         />
 
         <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
@@ -119,7 +134,7 @@ const Home: React.FC = () => {
           <Modal 
             content='리포트 전체를 삭제하시겠습니까?'      
             onClickedCancel={() => setIsDeleteModalOpen(false)}
-            onClickedOk={() => handleDelteAll()}/>
+            onClickedOk={() => handleDeleteAllReport()}/>
         )}
 
         {isLoading && <Loader />}

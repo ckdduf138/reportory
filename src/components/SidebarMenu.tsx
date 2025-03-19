@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { copyReport } from '../utils/storage';
+import { getReport } from '../utils/stores/reportUtils';
+import { formatTime } from '../utils/transalte';
+import { toast } from './toastContainer';
 
 const SidebarMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,8 +18,25 @@ const SidebarMenu: React.FC = () => {
     navigate("/category");
   };
 
-  const handleExport = () => {
-    copyReport();
+  const handleExport = async () => {
+    const reports = await getReport();
+  
+    const reportText = reports.map((report) => {
+      const formattedStartTime = formatTime(report.startTime);
+      const formattedEndTime = formatTime(report.endTime);
+      return `${formattedStartTime} ~ ${formattedEndTime}\n${report.content}\n\n`;
+    }).join("");
+  
+    try {
+      if(reportText !== '') {
+        await navigator.clipboard.writeText(reportText);
+      }
+      else {
+        toast.info('먼저 기록해주세요.');
+      }
+    } catch (error) {
+      toast.error('클립보드에 복사하는데 실패했어요.');
+    }
   };
 
   return (
