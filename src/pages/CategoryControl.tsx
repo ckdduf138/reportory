@@ -91,8 +91,9 @@ const CategoryControl: React.FC = () =>  {
       {/* 카테고리 리스트 */}
       <ul className="my-6 bg-white rounded-lg shadow-md divide-y">
         {categories.map((category) => (
-          <li key={category.id} className="flex justify-between items-center py-3 px-4">
-            <span className="text-gray-900 font-medium">{category.name}</span>
+          <li key={category.id} className="flex justify-between items-center py-3 px-4 space-x-4">
+            <span className="text-gray-900 font-medium flex-1 truncate">{category.name}</span>
+            <div className="w-5 h-5 rounded-full bg-blue-500"></div>
             <div className="flex gap-3">
               <button onClick={() => openModal(category)}>
                 <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
