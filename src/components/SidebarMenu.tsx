@@ -22,7 +22,10 @@ const SidebarMenu: React.FC = () => {
     const reports = await getReport();
     
     const today = new Date();
-    const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}\n\n`;
+
+    console.log(today.toLocaleDateString());
+
+    const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}(${today.toLocaleDateString('ko-KR', { weekday: 'short' })})\n\n`;
   
     const reportText = reports.map((report) => {
       const formattedStartTime = formatTime(report.startTime);
