@@ -56,7 +56,7 @@ export const ToastContainer = () => {
       setToasts([{ id: crypto.randomUUID(), message, type }]);
       setTimeout(() => {
         setToasts([]);
-      }, 1000); 
+      }, 2000); 
     };
 
     return () => {
@@ -67,7 +67,7 @@ export const ToastContainer = () => {
   return (
     <div className="fixed top-5 left-1/2 -translate-x-1/2 space-y-3 z-50">
       {toasts.map(({ id, message, type }) => (
-        <div key={id} className="max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg flex p-4">
+        <div key={id} className="max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg flex p-4 animate-slide-toast">
           <ToastIcon type={type} />
           <p className="ms-3 text-sm text-gray-700">{message}</p>
         </div>
