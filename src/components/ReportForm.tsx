@@ -83,10 +83,10 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
         </div>
 
         <div className="flex justify-between items-center mt-6">
-          <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
+          <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition active:scale-95"
             onClick={onClose}>취소
           </button>
-          <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 
+          <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 active:scale-95 
             ${isFormValid ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
             disabled={!isFormValid}
             onClick={handleSubmit}>{initialReport ? '수정' : '저장'}

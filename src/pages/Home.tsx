@@ -106,12 +106,12 @@ const Home: React.FC = () => {
         />
 
         <div className="fixed bottom-0 left-0 w-full bg-white py-4 px-6 flex justify-between items-center shadow-lg">
-          <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md" 
+          <button className="w-14 h-14 flex items-center justify-center bg-gray-300 rounded-full shadow-md transition active:scale-95" 
             onClick={() => { reports.length === 0 ? toast.warning("삭제할 리포트가 없어요.") : setIsDeleteModalOpen(true)}}>
             <img src={`${process.env.PUBLIC_URL}/images/common/ic-trash-02.svg`} />
           </button>
 
-          <button className="w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg right-0" 
+          <button className="w-16 h-16 bg-black flex items-center justify-center rounded-full shadow-lg right-0 transition active:scale-95" 
             onClick={handleAddReport}>
             <img src={`${process.env.PUBLIC_URL}/images/home/ic-plus.svg`} />
           </button>

@@ -99,10 +99,10 @@ export default function CategoryPage() {
             />
 
             <div className="flex justify-between items-center mt-6">
-              <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300" 
+              <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition active:scale-95" 
                 onClick={closeModal}>취소
               </button>
-              <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 
+              <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 active:scale-95
                 ${categoryName ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
                 disabled={!categoryName}
                 onClick={saveCategory}>저장

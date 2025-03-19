@@ -13,10 +13,10 @@ const Modal: React.FC<ModalProps> = ({content, onClickedCancel, onClickedOk}) =>
           <h3 className="text-lg font-semibold mb-6">{content}</h3>
           
           <div className="flex justify-between items-center mt-6">
-            <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
+            <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition active:scale-95"
               onClick={() => onClickedCancel()}>취소
             </button>
-            <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300"
+            <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-300 active:scale-95"
               onClick={() => onClickedOk()}>확인
             </button>
           </div>
