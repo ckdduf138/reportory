@@ -10,4 +10,7 @@ export interface Report {
 export interface Category {
   id: string;
   name: string;
+  color: string;
 }
+
+export const DefaultCategoryColor = '#7986CB';

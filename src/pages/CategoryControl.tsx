@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import { toast } from "../components/toastContainer";
 import SidebarMenu from "../components/SidebarMenu";
+import ColorPicker from "../components/ColorPicker";
 
 import { generateUUID } from "../utils/transalte";
 import { createCategory, deleteCategory, getCategory, updateCategory } from "../utils/stores/categoryUtils";
 
-import { Category } from "../types/Common";
+import { Category, DefaultCategoryColor } from "../types/Common";
+
 
 const CategoryControl: React.FC = () =>  {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -41,17 +43,16 @@ const CategoryControl: React.FC = () =>  {
   };
 
   // 카테고리 저장
-  const handleSaveCategory = async () => {
-    if (!categoryName.trim()) return;
-    
+  const handleSaveCategory = async (category: Category) => {    
     setIsLoading(true);
+    
     let response: string = '';
     try {
-      if(editingCategory) {
-        response = await updateCategory({...editingCategory, name: categoryName});
+      if(category.id) {
+        response = await updateCategory({...category});
       }
       else {
-        const newCategory: Category = {id: generateUUID(), name: categoryName};
+        const newCategory: Category = {...category, id: generateUUID(), color: DefaultCategoryColor};
         response = await createCategory(newCategory);
       }
   
@@ -93,7 +94,7 @@ const CategoryControl: React.FC = () =>  {
         {categories.map((category) => (
           <li key={category.id} className="flex justify-between items-center py-3 px-4 space-x-4">
             <span className="text-gray-900 font-medium flex-1 truncate">{category.name}</span>
-            <div className="w-5 h-5 rounded-full bg-blue-500"></div>
+            <ColorPicker category={category} updateCategory={handleSaveCategory}/>
             <div className="flex gap-3">
               <button onClick={() => openModal(category)}>
                 <img src={`${process.env.PUBLIC_URL}/images/common/ic-edit-02.svg`} />
@@ -135,7 +136,7 @@ const CategoryControl: React.FC = () =>  {
               <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 active:scale-95
                 ${categoryName ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
                 disabled={!categoryName}
-                onClick={() => handleSaveCategory()}>저장
+                onClick={() => handleSaveCategory({...editingCategory, name: categoryName} as Category)}>저장
               </button>
             </div>
           </div>
