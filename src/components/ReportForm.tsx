@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Report } from '../types/Common';
+import Dropdown from './Dropdown';
 
 interface ReportFormProps {
   isOpen: boolean;
@@ -10,11 +11,12 @@ interface ReportFormProps {
   onClose: () => void;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialReport, isOpen, onSubmit, onClose }) => {
+const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport, isOpen, onSubmit, onClose }) => {
   const [scale, setScale] = useState(0.5);
-  const [startTime, setStartTime] = useState(initialReport?.startTime || '');
-  const [endTime, setEndTime] = useState(initialReport?.endTime || '');
-  const [content, setContent] = useState(initialReport?.content || '');
+  const [startTime, setStartTime] = useState(editReport?.startTime || '');
+  const [endTime, setEndTime] = useState(editReport?.endTime || '');
+  const [content, setContent] = useState(editReport?.content || '');
+  const [category, setCategory] = useState(editReport?.category || '');
 
   useEffect(() => {
     if (isOpen) {
@@ -25,22 +27,23 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
   }, [isOpen]);
 
   useEffect(() => {
-    if (!initialReport) {
+    if (!editReport) {
       setStartTime(reports.length > 0 ? reports[reports.length - 1].endTime : '00:00');
 
       const currentTime = new Date();
       const formattedTime = `${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}`;
       setEndTime(formattedTime);
     }
-  }, [reports, initialReport]);
+  }, [reports, editReport]);
 
   const handleSubmit = () => {
     if (startTime && endTime && content.trim()) {
       onSubmit({
-        ...initialReport,
+        ...editReport,
         startTime,
         endTime,
         content,
+        category,
       } as Report);
 
       onClose();
@@ -48,48 +51,47 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport: initialRep
   };
 
   const isFormValid = startTime && endTime && content.trim();
-  const title = initialReport ? '리포트 수정하기' : '리포트 추가하기';
+  const title = editReport ? '리포트 수정하기' : '리포트 추가하기';
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md" onClick={() => onClose()}>
-      <div className={`bg-white p-6 rounded-lg shadow-xl w-[80%] max-w-7xl transition-transform duration-300 ease-in-out`}
+      <div className={`flex flex-col bg-white p-6 gap-4 rounded-lg shadow-xl w-[80%] max-w-7xl transition-transform duration-300 ease-in-out`}
         style={{ transform: `scale(${scale})` }}
         onClick={(e) => {e.stopPropagation()}}>
           
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">{title}</h2>
+        <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">시작 시간</label>
-          <input className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black"
-            type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}/>
-        </div>
+        <Dropdown 
+          category={editReport?.category}
+          handleSetCategory={setCategory}
+        />
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">종료 시간</label>
-          <input className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black"
-            type="time" 
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}/>
-        </div>
+        <input className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black text-sm"
+          type="time"
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
+        />
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">내용</label>
-          <textarea className="w-full p-3 border-2 border-gray-300 rounded-lg h-40 resize-none focus:outline-none focus:ring-0 focus:border-black"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용을 입력해주세요.."/>
-        </div>
+        <input className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black text-sm"
+          type="time" 
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        />
 
-        <div className="flex justify-between items-center mt-6">
+        <textarea className="w-full p-3 border-2 border-gray-300 rounded-lg h-20 resize-none focus:outline-none focus:ring-0 focus:border-black"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="내용"
+        />
+
+        <div className="flex justify-around items-center">
           <button className="bg-gray-700 text-white px-6 py-2 rounded-lg shadow-md hover:bg-gray-600 transition active:scale-95"
             onClick={onClose}>취소
           </button>
           <button className={`px-6 py-2 rounded-lg shadow-md transition duration-300 active:scale-95 
             ${isFormValid ? 'bg-gray-700 hover:bg-gray-800 text-white': 'bg-gray-300 cursor-not-allowed'}`}
             disabled={!isFormValid}
-            onClick={handleSubmit}>{initialReport ? '수정' : '저장'}
+            onClick={handleSubmit}>{editReport ? '수정' : '저장'}
           </button>
         </div>
       </div>

@@ -56,7 +56,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
                 <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
                 <p className={`${expandedReportIndex === index ? '' : 'truncate line-clamp-1'}`}>{report.content}</p>
                 {report.category && 
-                  <Category>{report.category}</Category>
+                  <Category>{report.category.name}</Category>
                 }
               </div>
             

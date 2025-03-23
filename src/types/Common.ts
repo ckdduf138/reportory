@@ -3,8 +3,7 @@ export interface Report {
   startTime: string;
   endTime: string;
   content: string;
-  category?: string;
-  categoryColorCode?: string;
+  category?: Category;
 }
 
 export interface Category {
