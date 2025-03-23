@@ -30,7 +30,7 @@ const SidebarMenu: React.FC = () => {
     const reportText = reports.map((report) => {
       const formattedStartTime = formatTime(report.startTime);
       const formattedEndTime = formatTime(report.endTime);
-      return `${formattedStartTime} ~ ${formattedEndTime}\n${report.content}\n\n`;
+      return `${formattedStartTime} ~ ${formattedEndTime} ${report.content}\n`;
     }).join("");
   
     try {
