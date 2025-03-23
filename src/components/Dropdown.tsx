@@ -43,7 +43,7 @@ const Dropdown: React.FC<DropdownProps> = ({category, handleSetCategory}) => {
     <div className="relative w-44">
       <button
         onClick={toggleDropdown}
-        className="flex justify-between w-full p-3 pr-6 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black text-sm text-center inline-flex items-center"
+        className="flex justify-between w-full p-3 pr-8 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-0 focus:border-black text-sm text-center inline-flex items-center"
       >
         {currentCategory ? 
           <>
