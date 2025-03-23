@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { formatTime } from '../utils/transalte';
 
 import { Report } from '../types/Common';
-import Category from './Category';
+import CategoryComponent from './Category';
 
 interface ReportViewerProps {
   reports: Report[];
@@ -56,7 +56,7 @@ const ReportViewer: React.FC<ReportViewerProps> = ({ reports, delete_report, edi
                 <span>{formatTime(report.startTime)} ~ {formatTime(report.endTime)}</span>
                 <p className={`${expandedReportIndex === index ? '' : 'truncate line-clamp-1'}`}>{report.content}</p>
                 {report.category && 
-                  <Category>{report.category.name}</Category>
+                  <CategoryComponent category={report.category} />
                 }
               </div>
             

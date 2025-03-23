@@ -1,19 +1,18 @@
-import React, { ReactNode } from "react";
+import { Category } from "../types/Common";
 
 interface CategoryProps {
-  children: ReactNode;
-  categoryColorCode?: string;
+  category: Category;
 }
 
-const Category: React.FC<CategoryProps> = ({ children, categoryColorCode }) => {
-  if (!children) return null;
+const CategoryComponent: React.FC<CategoryProps> = ({ category }) => {
+  if (!category) return null;
 
   return (
     <div className="mt-2 text-sm text-gray-600">
         <span className="px-2 py-1 rounded" 
-        style={{ backgroundColor: categoryColorCode, color: "#fff" }}>{children}</span>
+        style={{ backgroundColor: category.color, color: "#ffffff" }}>{category.name}</span>
     </div>
   );
 };
 
-export default Category;
+export default CategoryComponent;
