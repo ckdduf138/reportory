@@ -1,7 +1,7 @@
 const DB_NAME = "reportoryDB";
 export const REPORT_STORE_NAME = "reports";
 export const CATEGORY_STORE_NAME = "categories";
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 // IndexedDB 열기
 export const openDB = (): Promise<IDBDatabase> => {
@@ -16,10 +16,6 @@ export const openDB = (): Promise<IDBDatabase> => {
       storeNames.forEach(storeName => {
         if (!db.objectStoreNames.contains(storeName)) {
           const objectStore = db.createObjectStore(storeName, { keyPath: "id" });
-
-          if (storeName === REPORT_STORE_NAME) {
-            objectStore.createIndex("startTime", "startTime", { unique: false });
-          }
         }
       });
     };

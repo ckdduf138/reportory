@@ -97,7 +97,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen flex items-start justify-center relative">
       <div className="p-5 pb-24 w-full max-w-7xl">
-        <h1 className="text-2xl font-bold mb-4 text-center text-black">Daily Report</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-black">Reportory</h1>
 
         <ReportViewer 
           reports={reports} 
