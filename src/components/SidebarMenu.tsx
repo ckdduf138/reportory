@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getReport } from '../utils/stores/reportUtils';
 import { formatTime } from '../utils/transalte';
 import { toast } from './toastContainer';
+import { deleteDatabase } from '../utils/stores/dbUtils';
 
 const SidebarMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +23,6 @@ const SidebarMenu: React.FC = () => {
     const reports = await getReport();
     
     const today = new Date();
-
-    console.log(today.toLocaleDateString());
 
     const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}(${today.toLocaleDateString('ko-KR', { weekday: 'short' })})\n\n`;
   
@@ -44,6 +43,16 @@ const SidebarMenu: React.FC = () => {
     }
   };
   
+  const handleHardReset = () => {
+    try {
+      deleteDatabase();
+
+      toast.success('DB를 삭제하는데 성공했어요.');
+    } catch (error) {
+      toast.error('DB를 삭제하는데 실패했어요.');
+    }
+    
+  };
 
   return (
     <>
@@ -74,7 +83,7 @@ const SidebarMenu: React.FC = () => {
           <NavItem label="카테고리" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-tag.svg`} onClicked={handleCategory}/>
           <NavItem label="분석" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-bar-chart-square-up-01.svg`} onClicked={() => {}}/>
           <NavItem label="공유" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-export.svg`} onClicked={handleCopyClipboard}/>
-          <NavItem label="도움말" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-help-circle-contained.svg`} onClicked={() => {}}/>
+          <NavItem label="도움말" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-help-circle-contained.svg`} onClicked={handleHardReset}/>
           <NavItem label="설정" iconSrc={`${process.env.PUBLIC_URL}/images/menu/ic-settings.svg`} onClicked={() => {}}/>
         </nav>
       </div>
