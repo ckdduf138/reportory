@@ -94,6 +94,8 @@ const CategoryControl: React.FC = () =>  {
   
   const saveEditedCategory = (category: Category) => {
     if (editedName.trim()) {
+      if(editedName === category.name) return;
+      
       handleSaveCategory({
         ...category,
         name: editedName,
@@ -144,13 +146,13 @@ const CategoryControl: React.FC = () =>  {
       </div>
 
       {/* 카테고리 추가 버튼 */}
-      <button className="flex w-full items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-lg font-semibold transition active:scale-95"
-        onClick={() => openModal()}
-      >
-        <img src={`${process.env.PUBLIC_URL}/images/category/ic-plus-02.svg`} /> 카테고리 추가
-      </button>
-
-      <SidebarMenu />
+      <div className="flex fixed bottom-0 left-0 w-full bg-white py-4 px-6 shadow-lg">
+        <button className="flex w-full justify-center bg-black text-white py-4 rounded-lg text-lg font-semibold transition active:scale-95"
+          onClick={() => openModal()}
+        >
+          <img src={`${process.env.PUBLIC_URL}/images/category/ic-plus-02.svg`} /> 카테고리 추가
+        </button>
+      </div>
 
       {/* 카테고리 추가하는 모달창 */}
       {isModalOpen && (
@@ -179,8 +181,8 @@ const CategoryControl: React.FC = () =>  {
         </div>
       )}
 
+      <SidebarMenu />
       {isLoading && <Loader />}
-
     </div>
   );
 }
