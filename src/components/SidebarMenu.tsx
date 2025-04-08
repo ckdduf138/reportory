@@ -58,7 +58,7 @@ const SidebarMenu: React.FC = () => {
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <h1 className="flex p-4 text-2xl font-bold text-center text-black">Daily Report</h1>
+        <h1 className="flex p-4 text-2xl font-bold text-center text-black">Reportory</h1>
 
         <div className="border-t border-gray-300 mb-2 mx-3" />
 
