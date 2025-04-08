@@ -35,7 +35,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({category, updateCategory}) => 
   return (
     <div className="relative flex flex-col items-center">
       <div
-        className="w-5 h-5 rounded-full border border-gray-300 shadow-lg"
+        className="w-5 h-5 rounded-full border border-gray-300 shadow-lg cursor-pointer"
         style={{ backgroundColor: category.color }}
         onClick={() => setShowPalette(!showPalette)}
       />
@@ -54,7 +54,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({category, updateCategory}) => 
           {colors.map((color) => (
             <div
               key={color}
-              className="w-5 h-5 rounded-full border-2 border-transparent"
+              className="w-5 h-5 rounded-full border-2 border-transparent cursor-pointer"
               style={{ backgroundColor: color }}
               onClick={() => handleSetColor(color)}
             ></div>

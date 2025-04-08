@@ -55,7 +55,7 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports, editReport, isOpen, on
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md" onClick={() => onClose()}>
-      <div className={`flex flex-col bg-white p-6 gap-4 rounded-lg shadow-xl w-[80%] max-w-7xl transition-transform duration-300 ease-in-out`}
+      <div className={`flex flex-col bg-white p-6 gap-4 rounded-lg shadow-xl w-[80%] max-w-2xl transition-transform duration-300 ease-in-out`}
         style={{ transform: `scale(${scale})` }}
         onClick={(e) => {e.stopPropagation()}}>
           
