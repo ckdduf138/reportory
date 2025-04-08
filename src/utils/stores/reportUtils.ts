@@ -28,7 +28,8 @@ export const getReport = async (): Promise<Report[]> => {
       db = await openDB();
       const transaction  = db.transaction(REPORT_STORE_NAME, "readonly");
       const store = transaction .objectStore(REPORT_STORE_NAME);
-      const request = store.getAll();
+      const index = store.index("startTime");
+      const request = index.getAll();
 
       request.onsuccess = () => resolve(request.result);
       request.onerror = (e) => reject(request.error);

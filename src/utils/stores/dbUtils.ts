@@ -16,6 +16,10 @@ export const openDB = (): Promise<IDBDatabase> => {
       storeNames.forEach(storeName => {
         if (!db.objectStoreNames.contains(storeName)) {
           const objectStore = db.createObjectStore(storeName, { keyPath: "id" });
+
+          if (storeName === REPORT_STORE_NAME) {
+            objectStore.createIndex("startTime", "startTime", { unique: false });
+          }
         }
       });
     };
