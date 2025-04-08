@@ -1,7 +1,7 @@
 const DB_NAME = "reportoryDB";
 export const REPORT_STORE_NAME = "reports";
 export const CATEGORY_STORE_NAME = "categories";
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 // IndexedDB 열기
 export const openDB = (): Promise<IDBDatabase> => {
