@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Home,
-  Tag,
+  FolderOpen,
   BarChart3,
-  Share,
+  Share2,
   HelpCircle,
   Settings,
   Menu,
   X,
 } from "lucide-react";
 
-import { getReport } from "../../utils/stores/reportUtils";
-import { formatTime } from "../../utils/transalte";
 import { toast } from "../ui/toastContainer";
-import { deleteDatabase } from "../../utils/stores/dbUtils";
 import { useIsMobile } from "../../hooks/useBreakpoint";
 
 const SidebarMenu: React.FC = () => {
@@ -35,45 +32,16 @@ const SidebarMenu: React.FC = () => {
     navigate("/stats");
   };
 
-  const handleCopyClipboard = async () => {
-    const reports = await getReport();
-
-    const today = new Date();
-
-    const formattedDate = `${today.getFullYear()}.${String(
-      today.getMonth() + 1
-    ).padStart(2, "0")}.${String(today.getDate()).padStart(
-      2,
-      "0"
-    )}(${today.toLocaleDateString("ko-KR", { weekday: "short" })})\n\n`;
-
-    const reportText = reports
-      .map((report) => {
-        const formattedStartTime = formatTime(report.startTime);
-        const formattedEndTime = formatTime(report.endTime);
-        return `${formattedStartTime} ~ ${formattedEndTime} ${report.content}\n`;
-      })
-      .join("");
-
-    try {
-      if (reportText !== "") {
-        await navigator.clipboard.writeText(formattedDate + reportText);
-      } else {
-        toast.info("먼저 기록해주세요.");
-      }
-    } catch (error) {
-      toast.error("클립보드에 복사하는데 실패했어요.");
-    }
+  const handleShare = () => {
+    navigate("/share");
   };
 
-  const handleHardReset = () => {
-    try {
-      deleteDatabase();
+  const handleSettings = () => {
+    navigate("/settings");
+  };
 
-      toast.success("DB를 삭제하는데 성공했어요.");
-    } catch (error) {
-      toast.error("DB를 삭제하는데 실패했어요.");
-    }
+  const handleHelp = () => {
+    navigate("/help");
   };
 
   const menuItems = [
@@ -85,19 +53,34 @@ const SidebarMenu: React.FC = () => {
     },
     {
       label: "카테고리",
-      icon: Tag,
+      icon: FolderOpen,
       onClick: handleCategory,
       accent: location.pathname === "/category",
     },
     {
-      label: "분석",
+      label: "통계",
       icon: BarChart3,
       onClick: handleStats,
       accent: location.pathname === "/stats",
     },
-    { label: "공유", icon: Share, onClick: handleCopyClipboard },
-    { label: "도움말", icon: HelpCircle, onClick: handleHardReset },
-    { label: "설정", icon: Settings, onClick: () => {} },
+    {
+      label: "공유",
+      icon: Share2,
+      onClick: handleShare,
+      accent: location.pathname === "/share",
+    },
+    {
+      label: "설정",
+      icon: Settings,
+      onClick: handleSettings,
+      accent: location.pathname === "/settings",
+    },
+    {
+      label: "도움말",
+      icon: HelpCircle,
+      onClick: handleHelp,
+      accent: location.pathname === "/help",
+    },
   ];
 
   return (

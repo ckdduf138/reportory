@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Plus, Edit2, Trash2, Tag } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Loader, SimpleColorPicker } from "../components/ui";
@@ -96,8 +96,10 @@ const CategoryControl: React.FC = () => {
 
               {categories.length === 0 ? (
                 <div className="text-center py-12">
-                  <Tag className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500">아직 카테고리가 없습니다.</p>
+                  <p className="text-sm text-gray-400 mt-2">
+                    새 카테고리를 추가해보세요.
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -119,17 +121,17 @@ const CategoryControl: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => startEdit(category)}
-                          className="p-1 text-blue-600 hover:bg-blue-100 rounded"
+                          className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg"
                           title="수정"
                         >
-                          <Edit2 className="w-4 h-4" />
+                          <Pencil className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(category.id)}
-                          className="p-1 text-red-600 hover:bg-red-100 rounded"
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg"
                           title="삭제"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
                     </div>

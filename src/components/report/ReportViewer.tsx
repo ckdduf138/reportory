@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback } from "react";
 import {
   Clock,
-  Edit3,
+  Pencil,
   Trash2,
   FileText,
   ExternalLink,
@@ -110,17 +110,17 @@ const ReportViewer: React.FC<ReportViewerProps> = memo(
               <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 <button
                   onClick={(e) => handleEdit(e, index, report)}
-                  className="p-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                  className="p-2.5 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:border-blue-300 transition-colors"
                   title="수정"
                 >
-                  <Edit3 className="w-4 h-4 text-teal-600" />
+                  <Pencil className="w-5 h-5 text-blue-600" />
                 </button>
                 <button
                   onClick={(e) => handleDelete(e, index, report.id)}
-                  className="p-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:border-red-300 transition-colors"
+                  className="p-2.5 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:border-red-300 transition-colors"
                   title="삭제"
                 >
-                  <Trash2 className="w-4 h-4 text-red-600" />
+                  <Trash2 className="w-5 h-5 text-red-600" />
                 </button>
               </div>
 

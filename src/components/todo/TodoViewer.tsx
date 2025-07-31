@@ -1,5 +1,5 @@
 import React from "react";
-import { Circle, CheckCircle, Edit3, Trash2 } from "lucide-react";
+import { Circle, CheckCircle, Pencil, Trash2 } from "lucide-react";
 import CategoryComponent from "../ui/Category";
 import type { Todo, Category } from "../../types/Common";
 import { useIsMobile, useIsTablet } from "../../hooks/useBreakpoint";
@@ -160,23 +160,23 @@ const TodoViewer = React.forwardRef<HTMLDivElement, TodoViewerProps>(
                         <button
                           onClick={() => onEditTodo(todo)}
                           className={`${
-                            isMobile ? "p-1.5" : "p-2"
-                          } text-gray-500 hover:bg-gray-50 rounded-lg transition-colors`}
+                            isMobile ? "p-2" : "p-2.5"
+                          } text-blue-600 hover:bg-blue-50 rounded-lg transition-colors`}
                           title="수정"
                         >
-                          <Edit3
-                            className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`}
+                          <Pencil
+                            className={`${isMobile ? "w-4 h-4" : "w-5 h-5"}`}
                           />
                         </button>
                         <button
                           onClick={() => onDeleteTodo(todo.id)}
                           className={`${
-                            isMobile ? "p-1.5" : "p-2"
-                          } text-red-500 hover:bg-red-50 rounded-lg transition-colors`}
+                            isMobile ? "p-2" : "p-2.5"
+                          } text-red-600 hover:bg-red-50 rounded-lg transition-colors`}
                           title="삭제"
                         >
                           <Trash2
-                            className={`${isMobile ? "w-3 h-3" : "w-4 h-4"}`}
+                            className={`${isMobile ? "w-4 h-4" : "w-5 h-5"}`}
                           />
                         </button>
                       </div>

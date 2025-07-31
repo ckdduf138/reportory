@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckSquare } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { useIsMobile } from "../../hooks/useBreakpoint";
 
 interface AppHeaderProps {
@@ -20,7 +20,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           className={`bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl 
           ${isMobile ? "p-2.5" : "p-4"} shadow-lg`}
         >
-          <CheckSquare
+          <Calendar
             className={`${isMobile ? "w-5 h-5" : "w-8 h-8"} text-white`}
           />
         </div>
