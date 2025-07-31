@@ -36,29 +36,22 @@ export const generateShareText = (reportData: ReportData): GeneratedReport => {
     "0"
   )}(${today.toLocaleDateString("ko-KR", { weekday: "short" })})`;
 
-  let shareText = `📅 ${formattedDate}\n\n`;
+  let shareText = `📋 To Do List (${formattedDate})\n\n`;
 
-  // 완료된 할일 추가
-  if (completedTodos.length > 0) {
-    shareText += "✅ 완료한 할일:\n";
-    completedTodos.forEach((todo) => {
-      shareText += `• ${todo.title}\n`;
-    });
-    shareText += "\n";
-  }
+  // 모든 할일을 하나의 리스트로 표시 (완료된 것은 체크, 미완료는 빈 체크박스)
+  const allTodos = [...completedTodos, ...incompleteTodos];
 
-  // 미완료 할일 추가
-  if (incompleteTodos.length > 0) {
-    shareText += "📋 진행 중인 할일:\n";
-    incompleteTodos.forEach((todo) => {
-      shareText += `• ${todo.title}\n`;
+  if (allTodos.length > 0) {
+    allTodos.forEach((todo) => {
+      const checkmark = todo.isCompleted ? "✅" : "☑️";
+      shareText += `${checkmark} ${todo.title}\n`;
     });
     shareText += "\n";
   }
 
   // 오늘 할일 통계
   shareText += `📊 오늘의 성과:\n`;
-  shareText += `완료: ${todayCompleted.length}개 / 전체: ${todayTodos.length}개\n`;
+  shareText += `전체: ${todayTodos.length}개 / 완료: ${todayCompleted.length}개\n`;
 
   const completionRate =
     todayTodos.length > 0
@@ -66,7 +59,7 @@ export const generateShareText = (reportData: ReportData): GeneratedReport => {
       : 0;
 
   if (todayTodos.length > 0) {
-    shareText += `완료율: ${completionRate}%\n`;
+    shareText += `완료율: ${completionRate}`;
   }
 
   return {

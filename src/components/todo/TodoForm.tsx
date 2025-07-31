@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState, useCallback } from "react";
 import {
   X,
   Plus,
-  Calendar,
   AlertCircle,
   AlertTriangle,
   Info,
@@ -29,9 +28,6 @@ const TodoForm: React.FC<TodoFormProps> = memo(
     const [priority, setPriority] = useState<"high" | "medium" | "low">(
       editTodo?.priority || "medium"
     );
-    const [dueDate, setDueDate] = useState(
-      editTodo?.dueDate || new Date().toISOString().split("T")[0]
-    );
 
     useEffect(() => {
       if (isOpen) {
@@ -48,14 +44,14 @@ const TodoForm: React.FC<TodoFormProps> = memo(
           title: title.trim(),
           category,
           priority,
-          dueDate,
+          dueDate: new Date().toISOString().split("T")[0], // 오늘 날짜로 기본 설정
           isCompleted: editTodo?.isCompleted || false,
           createdAt: editTodo?.createdAt || new Date().toISOString(),
         } as Todo);
 
         onClose();
       }
-    }, [title, category, priority, dueDate, editTodo, onSubmit, onClose]);
+    }, [title, category, priority, editTodo, onSubmit, onClose]);
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent) => {
@@ -150,40 +146,18 @@ const TodoForm: React.FC<TodoFormProps> = memo(
               </div>
             </div>
 
-            <div
-              className={`grid gap-5 ${
-                isMobile ? "grid-cols-1" : "grid-cols-2"
-              }`}
-            >
-              {/* 카테고리 선택 */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-teal-600" />
-                    카테고리
-                  </div>
-                </label>
-                <Dropdown
-                  category={editTodo?.category}
-                  handleSetCategory={setCategory}
-                />
-              </div>
-
-              {/* 마감일 선택 */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-teal-600" />
-                    마감일
-                  </div>
-                </label>
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 text-base transition-all duration-200 bg-gray-50 focus:bg-white"
-                />
-              </div>
+            {/* 카테고리 선택 */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <div className="flex items-center gap-2">
+                  <Tag className="w-4 h-4 text-teal-600" />
+                  카테고리
+                </div>
+              </label>
+              <Dropdown
+                category={editTodo?.category}
+                handleSetCategory={setCategory}
+              />
             </div>
 
             {/* 우선순위 선택 */}

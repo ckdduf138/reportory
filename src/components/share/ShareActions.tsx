@@ -1,45 +1,36 @@
 import React from "react";
-import { Copy, Download, Mail, Share2 } from "lucide-react";
+import { Clipboard, FileDown, ExternalLink } from "lucide-react";
 
 interface ShareActionsProps {
   onCopy: () => void;
   onDownload: () => void;
-  onEmail: () => void;
   onShare: () => void;
 }
 
 const ShareActions: React.FC<ShareActionsProps> = ({
   onCopy,
   onDownload,
-  onEmail,
   onShare,
 }) => {
   const shareActions = [
     {
       id: "copy",
       label: "복사",
-      icon: Copy,
+      icon: Clipboard,
       color: "text-teal-600",
       action: onCopy,
     },
     {
       id: "download",
       label: "다운로드",
-      icon: Download,
+      icon: FileDown,
       color: "text-blue-600",
       action: onDownload,
     },
     {
-      id: "email",
-      label: "이메일",
-      icon: Mail,
-      color: "text-green-600",
-      action: onEmail,
-    },
-    {
       id: "share",
       label: "공유",
-      icon: Share2,
+      icon: ExternalLink,
       color: "text-purple-600",
       action: onShare,
     },
@@ -49,7 +40,7 @@ const ShareActions: React.FC<ShareActionsProps> = ({
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
       <h2 className="text-xl font-bold text-gray-800 mb-4">공유 방법</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {shareActions.map((action) => {
           const Icon = action.icon;
           return (
