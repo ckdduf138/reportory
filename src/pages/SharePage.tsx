@@ -12,7 +12,6 @@ import {
 
 import { AppHeader, SidebarMenu } from "../components/common";
 import { Loader } from "../components/ui";
-import { useReport } from "../hooks/report/useReport";
 import { useTodo } from "../hooks/todo/useTodo";
 import { useIsMobile } from "../hooks/useBreakpoint";
 import { formatTime } from "../utils/transalte";
@@ -20,7 +19,6 @@ import { toast } from "../components/ui/toastContainer";
 
 const SharePage: React.FC = () => {
   const isMobile = useIsMobile();
-  const { reports, fetchReports } = useReport();
   const { todos, fetchTodos } = useTodo();
 
   const [selectedFormat, setSelectedFormat] = useState<
@@ -33,9 +31,8 @@ const SharePage: React.FC = () => {
   const [generatedText, setGeneratedText] = useState("");
 
   useEffect(() => {
-    fetchReports();
     fetchTodos();
-  }, [fetchReports, fetchTodos]);
+  }, [fetchTodos]);
 
   const generateShareText = () => {
     setIsGenerating(true);
@@ -60,17 +57,6 @@ const SharePage: React.FC = () => {
       shareText += "\n";
     }
 
-    // 기록 추가
-    if (reports.length > 0) {
-      shareText += "⏰ 시간 기록:\n";
-      reports.forEach((report) => {
-        const formattedStartTime = formatTime(report.startTime);
-        const formattedEndTime = formatTime(report.endTime);
-        shareText += `${formattedStartTime} ~ ${formattedEndTime} ${report.content}\n`;
-      });
-      shareText += "\n";
-    }
-
     // 미완료 할일 추가
     const incompleteTodos = todos.filter((todo) => !todo.isCompleted);
     if (incompleteTodos.length > 0) {
@@ -78,6 +64,19 @@ const SharePage: React.FC = () => {
       incompleteTodos.forEach((todo) => {
         shareText += `• ${todo.title}\n`;
       });
+      shareText += "\n";
+    }
+
+    // 오늘 할일 통계
+    const todayTodos = todos.filter((todo) => todo.dueDate === selectedDate);
+    const todayCompleted = todayTodos.filter((todo) => todo.isCompleted);
+
+    shareText += `� 오늘의 성과:\n`;
+    shareText += `완료: ${todayCompleted.length}개 / 전체: ${todayTodos.length}개\n`;
+    if (todayTodos.length > 0) {
+      shareText += `완료율: ${Math.round(
+        (todayCompleted.length / todayTodos.length) * 100
+      )}%\n`;
     }
 
     setGeneratedText(shareText);
@@ -114,7 +113,7 @@ const SharePage: React.FC = () => {
 
   useEffect(() => {
     generateShareText();
-  }, [selectedDate, reports, todos]);
+  }, [selectedDate, todos]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">

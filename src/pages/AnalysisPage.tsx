@@ -13,92 +13,99 @@ import {
 
 import { AppHeader, SidebarMenu } from "../components/common";
 import { Loader } from "../components/ui";
-import { useReport } from "../hooks/report/useReport";
 import { useTodo } from "../hooks/todo/useTodo";
 import { useIsMobile } from "../hooks/useBreakpoint";
-import { Report, Todo } from "../types/Common";
+import { Todo } from "../types/Common";
 
 interface AnalysisData {
-  totalWorkHours: number;
-  todayWorkHours: number;
-  weekWorkHours: number;
+  totalTodos: number;
+  completedTodos: number;
+  todayTodos: number;
+  todayCompleted: number;
   completionRate: number;
   productivityScore: number;
   categoryStats: { [key: string]: number };
-  dailyTrends: { date: string; hours: number; todos: number }[];
+  dailyTrends: { date: string; todos: number; completed: number }[];
   priorityStats: { high: number; medium: number; low: number };
+  overdueCount: number;
+  averageCompletionDays: number;
 }
 
 const AnalysisPage: React.FC = () => {
   const isMobile = useIsMobile();
-  const { reports, fetchReports } = useReport();
   const { todos, fetchTodos } = useTodo();
 
   const [selectedPeriod, setSelectedPeriod] = useState<
     "week" | "month" | "quarter"
   >("week");
   const [selectedMetric, setSelectedMetric] = useState<
-    "time" | "productivity" | "completion"
-  >("time");
+    "completion" | "productivity" | "priority"
+  >("completion");
 
   useEffect(() => {
-    fetchReports();
     fetchTodos();
-  }, [fetchReports, fetchTodos]);
+  }, [fetchTodos]);
 
   const analysisData = useMemo((): AnalysisData => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const todayStr = today.toISOString().split("T")[0];
 
-    // 총 작업 시간 계산
-    const totalWorkHours = reports.reduce((sum, report) => {
-      const start = new Date(`2000-01-01 ${report.startTime}`);
-      const end = new Date(`2000-01-01 ${report.endTime}`);
-      return sum + (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    }, 0);
+    // 전체 할일 통계
+    const totalTodos = todos.length;
+    const completedTodos = todos.filter((todo) => todo.isCompleted).length;
 
-    // 오늘 작업 시간
-    const todayReports = reports.filter((report) => {
-      // Report에 createdAt이 없으므로 오늘 날짜로 가정
-      return true; // 모든 리포트를 오늘 것으로 간주 (실제로는 날짜 필드가 필요)
-    });
-    const todayWorkHours = todayReports.reduce((sum, report) => {
-      const start = new Date(`2000-01-01 ${report.startTime}`);
-      const end = new Date(`2000-01-01 ${report.endTime}`);
-      return sum + (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    }, 0);
-
-    // 주간 작업 시간
-    const weekReports = reports.filter((report) => {
-      // Report에 createdAt이 없으므로 모든 리포트를 주간으로 간주
-      return true;
-    });
-    const weekWorkHours = weekReports.reduce((sum, report) => {
-      const start = new Date(`2000-01-01 ${report.startTime}`);
-      const end = new Date(`2000-01-01 ${report.endTime}`);
-      return sum + (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-    }, 0);
+    // 오늘 할일 통계
+    const todayTodos = todos.filter((todo) => todo.dueDate === todayStr);
+    const todayCompleted = todayTodos.filter((todo) => todo.isCompleted).length;
 
     // 완료율 계산
-    const completedTodos = todos.filter((todo) => todo.isCompleted).length;
     const completionRate =
-      todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
+      totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
 
-    // 생산성 점수 (임의 계산)
+    // 연체된 할일 계산
+    const overdueCount = todos.filter(
+      (todo) => !todo.isCompleted && todo.dueDate < todayStr
+    ).length;
+
+    // 평균 완료 소요일 계산
+    const completedWithDates = todos.filter(
+      (todo) => todo.isCompleted && todo.completedAt && todo.createdAt
+    );
+    const averageCompletionDays =
+      completedWithDates.length > 0
+        ? Math.round(
+            completedWithDates.reduce((sum, todo) => {
+              const created = new Date(todo.createdAt);
+              const completed = new Date(todo.completedAt!);
+              return (
+                sum +
+                Math.ceil(
+                  (completed.getTime() - created.getTime()) /
+                    (1000 * 60 * 60 * 24)
+                )
+              );
+            }, 0) / completedWithDates.length
+          )
+        : 0;
+
+    // 생산성 점수 계산 (완료율, 연체율, 오늘 완료율 기반)
+    const overdueRate = totalTodos > 0 ? (overdueCount / totalTodos) * 100 : 0;
+    const todayCompletionRate =
+      todayTodos.length > 0 ? (todayCompleted / todayTodos.length) * 100 : 100;
     const productivityScore = Math.min(
       Math.round(
-        todayWorkHours * 10 + completionRate * 0.5 + reports.length * 2
+        completionRate * 0.5 +
+          (100 - overdueRate) * 0.3 +
+          todayCompletionRate * 0.2
       ),
       100
     );
 
     // 카테고리별 통계
-    const categoryStats = reports.reduce((acc, report) => {
-      const category = report.category || "기타";
-      const categoryKey =
-        typeof category === "string" ? category : category.name || "기타";
-      acc[categoryKey] = (acc[categoryKey] || 0) + 1;
+    const categoryStats = todos.reduce((acc, todo) => {
+      const categoryName = todo.category?.name || "기타";
+      acc[categoryName] = (acc[categoryName] || 0) + 1;
       return acc;
     }, {} as { [key: string]: number });
 
@@ -107,24 +114,16 @@ const AnalysisPage: React.FC = () => {
       const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
       const dateStr = date.toISOString().split("T")[0];
 
-      // 실제로는 Report에 날짜 정보가 없으므로 임시 데이터
-      const dayReports = i === 0 ? reports : []; // 오늘만 데이터 있다고 가정
-
-      const dayHours = dayReports.reduce((sum, report) => {
-        const start = new Date(`2000-01-01 ${report.startTime}`);
-        const end = new Date(`2000-01-01 ${report.endTime}`);
-        return sum + (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-      }, 0);
-
-      const dayTodos = i === 0 ? todos.length : Math.floor(Math.random() * 5); // 임시 데이터
+      const dayTodos = todos.filter((todo) => todo.dueDate === dateStr);
+      const dayCompleted = dayTodos.filter((todo) => todo.isCompleted);
 
       return {
         date: date.toLocaleDateString("ko-KR", {
           month: "short",
           day: "numeric",
         }),
-        hours: Math.round(dayHours * 10) / 10,
-        todos: dayTodos,
+        todos: dayTodos.length,
+        completed: dayCompleted.length,
       };
     }).reverse();
 
@@ -138,16 +137,19 @@ const AnalysisPage: React.FC = () => {
     );
 
     return {
-      totalWorkHours: Math.round(totalWorkHours * 10) / 10,
-      todayWorkHours: Math.round(todayWorkHours * 10) / 10,
-      weekWorkHours: Math.round(weekWorkHours * 10) / 10,
-      completionRate: Math.round(completionRate),
+      totalTodos,
+      completedTodos,
+      todayTodos: todayTodos.length,
+      todayCompleted,
+      completionRate,
       productivityScore,
       categoryStats,
       dailyTrends,
       priorityStats,
+      overdueCount,
+      averageCompletionDays,
     };
-  }, [reports, todos]);
+  }, [todos]);
 
   const StatCard = ({
     icon: Icon,
@@ -217,9 +219,9 @@ const AnalysisPage: React.FC = () => {
                   onChange={(e) => setSelectedMetric(e.target.value as any)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 >
-                  <option value="time">시간 분석</option>
-                  <option value="productivity">생산성 분석</option>
                   <option value="completion">완료율 분석</option>
+                  <option value="productivity">생산성 분석</option>
+                  <option value="priority">우선순위 분석</option>
                 </select>
               </div>
             </div>
@@ -228,24 +230,22 @@ const AnalysisPage: React.FC = () => {
           {/* 주요 지표 카드 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
-              icon={Clock}
-              title="오늘 작업 시간"
-              value={`${analysisData.todayWorkHours}h`}
-              subtitle="이번 주 평균과 비교"
-            />
-
-            <StatCard
               icon={Target}
-              title="할일 완료율"
-              value={`${analysisData.completionRate}%`}
-              subtitle={`${todos.filter((t) => t.isCompleted).length}/${
-                todos.length
-              } 완료`}
-              color="green"
+              title="오늘 할일"
+              value={`${analysisData.todayCompleted}/${analysisData.todayTodos}`}
+              subtitle="완료/전체"
             />
 
             <StatCard
               icon={Activity}
+              title="전체 완료율"
+              value={`${analysisData.completionRate}%`}
+              subtitle={`${analysisData.completedTodos}/${analysisData.totalTodos} 완료`}
+              color="green"
+            />
+
+            <StatCard
+              icon={Award}
               title="생산성 점수"
               value={analysisData.productivityScore}
               subtitle="100점 만점"
@@ -253,11 +253,11 @@ const AnalysisPage: React.FC = () => {
             />
 
             <StatCard
-              icon={Award}
-              title="주간 총 시간"
-              value={`${analysisData.weekWorkHours}h`}
-              subtitle="지난주 대비"
-              color="blue"
+              icon={Clock}
+              title="연체된 할일"
+              value={analysisData.overdueCount}
+              subtitle={analysisData.overdueCount > 0 ? "주의 필요" : "완벽!"}
+              color={analysisData.overdueCount > 0 ? "red" : "green"}
             />
           </div>
 
@@ -277,23 +277,30 @@ const AnalysisPage: React.FC = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <div className="text-sm font-medium">
-                        작업시간: {day.hours}h
+                        할일: {day.todos}개
                       </div>
                       <div className="text-sm text-gray-500">
-                        할일: {day.todos}개
+                        완료: {day.completed}개
                       </div>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-teal-600 h-2 rounded-full transition-all duration-300"
                         style={{
-                          width: `${Math.min((day.hours / 8) * 100, 100)}%`,
+                          width: `${
+                            day.todos > 0
+                              ? (day.completed / day.todos) * 100
+                              : 0
+                          }%`,
                         }}
                       ></div>
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 w-12 text-right">
-                    {Math.round((day.hours / 8) * 100)}%
+                    {day.todos > 0
+                      ? Math.round((day.completed / day.todos) * 100)
+                      : 0}
+                    %
                   </div>
                 </div>
               ))}
@@ -439,14 +446,14 @@ const AnalysisPage: React.FC = () => {
                 </div>
               )}
 
-              {analysisData.todayWorkHours < 4 && (
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="font-medium text-blue-800 mb-2">
-                    ⏰ 작업 시간 증대
+              {analysisData.overdueCount > 0 && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="font-medium text-red-800 mb-2">
+                    ⏰ 연체 할일 관리
                   </div>
-                  <div className="text-sm text-blue-700">
-                    오늘 작업 시간이 {analysisData.todayWorkHours}시간입니다.
-                    목표 시간을 설정해 보세요.
+                  <div className="text-sm text-red-700">
+                    연체된 할일이 {analysisData.overdueCount}개 있습니다.
+                    우선순위를 재조정해 보세요.
                   </div>
                 </div>
               )}
@@ -457,11 +464,36 @@ const AnalysisPage: React.FC = () => {
                     🚀 생산성 향상
                   </div>
                   <div className="text-sm text-purple-700">
-                    생산성 점수가 {analysisData.productivityScore}점입니다. 더
-                    집중할 수 있는 환경을 만들어 보세요.
+                    생산성 점수가 {analysisData.productivityScore}점입니다.
+                    마감일 관리와 할일 완료에 더 집중해 보세요.
                   </div>
                 </div>
               )}
+
+              {analysisData.averageCompletionDays > 7 && (
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="font-medium text-blue-800 mb-2">
+                    📈 완료 속도 개선
+                  </div>
+                  <div className="text-sm text-blue-700">
+                    평균 완료 소요일이 {analysisData.averageCompletionDays}
+                    일입니다. 할일을 더 작게 나누어 빠른 완료를 목표로 해보세요.
+                  </div>
+                </div>
+              )}
+
+              {analysisData.completionRate >= 80 &&
+                analysisData.overdueCount === 0 && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="font-medium text-green-800 mb-2">
+                      🎉 훌륭한 관리!
+                    </div>
+                    <div className="text-sm text-green-700">
+                      완료율이 높고 연체된 할일이 없습니다. 이 패턴을 계속
+                      유지하세요!
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
         </div>

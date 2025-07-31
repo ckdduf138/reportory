@@ -5,12 +5,9 @@ import {
   Trash2,
   Download,
   Upload,
-  Bell,
   Globe,
   Palette,
-  Shield,
   HelpCircle,
-  Settings as SettingsIcon,
   Database,
 } from "lucide-react";
 
@@ -22,12 +19,7 @@ import { toast } from "../components/ui/toastContainer";
 
 interface AppSettings {
   theme: "light" | "dark" | "auto";
-  language: "ko" | "en";
-  notifications: boolean;
-  autoSave: boolean;
   primaryColor: string;
-  fontSize: "small" | "medium" | "large";
-  dateFormat: "yyyy-mm-dd" | "mm/dd/yyyy" | "dd/mm/yyyy";
 }
 
 const SettingsPage: React.FC = () => {
@@ -35,12 +27,7 @@ const SettingsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [settings, setSettings] = useState<AppSettings>({
     theme: "light",
-    language: "ko",
-    notifications: true,
-    autoSave: true,
     primaryColor: "#14B8A6",
-    fontSize: "medium",
-    dateFormat: "yyyy-mm-dd",
   });
 
   useEffect(() => {
@@ -65,7 +52,6 @@ const SettingsPage: React.FC = () => {
     setIsLoading(true);
     try {
       const data = {
-        reports: localStorage.getItem("reports") || "[]",
         todos: localStorage.getItem("todos") || "[]",
         categories: localStorage.getItem("categories") || "[]",
         settings: localStorage.getItem("daily-report-settings") || "{}",
@@ -105,7 +91,6 @@ const SettingsPage: React.FC = () => {
           try {
             const data = JSON.parse(e.target?.result as string);
 
-            if (data.reports) localStorage.setItem("reports", data.reports);
             if (data.todos) localStorage.setItem("todos", data.todos);
             if (data.categories)
               localStorage.setItem("categories", data.categories);
@@ -198,112 +183,6 @@ const SettingsPage: React.FC = () => {
                     updateSetting("primaryColor", color)
                   }
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  글자 크기
-                </label>
-                <select
-                  value={settings.fontSize}
-                  onChange={(e) =>
-                    updateSetting("fontSize", e.target.value as any)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                >
-                  <option value="small">작게</option>
-                  <option value="medium">보통</option>
-                  <option value="large">크게</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* 일반 설정 */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <SettingsIcon className="w-5 h-5 text-teal-600" />
-              <h2 className="text-xl font-bold text-gray-800">일반 설정</h2>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  언어
-                </label>
-                <select
-                  value={settings.language}
-                  onChange={(e) =>
-                    updateSetting("language", e.target.value as any)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                >
-                  <option value="ko">한국어</option>
-                  <option value="en">English</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  날짜 형식
-                </label>
-                <select
-                  value={settings.dateFormat}
-                  onChange={(e) =>
-                    updateSetting("dateFormat", e.target.value as any)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                >
-                  <option value="yyyy-mm-dd">YYYY-MM-DD</option>
-                  <option value="mm/dd/yyyy">MM/DD/YYYY</option>
-                  <option value="dd/mm/yyyy">DD/MM/YYYY</option>
-                </select>
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Bell className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <div className="font-medium">알림</div>
-                    <div className="text-sm text-gray-600">
-                      중요한 업데이트를 받아보세요
-                    </div>
-                  </div>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={settings.notifications}
-                    onChange={(e) =>
-                      updateSetting("notifications", e.target.checked)
-                    }
-                    className="sr-only peer"
-                  />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Download className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <div className="font-medium">자동 저장</div>
-                    <div className="text-sm text-gray-600">
-                      변경사항을 자동으로 저장합니다
-                    </div>
-                  </div>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={settings.autoSave}
-                    onChange={(e) =>
-                      updateSetting("autoSave", e.target.checked)
-                    }
-                    className="sr-only peer"
-                  />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                </label>
               </div>
             </div>
           </div>

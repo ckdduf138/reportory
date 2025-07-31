@@ -1,7 +1,6 @@
 import React, { memo, useMemo } from "react";
 import {
   TrendingUp,
-  Clock,
   Target,
   Award,
   BarChart3,
@@ -12,16 +11,14 @@ import {
   AlertCircle,
   AlertTriangle,
   Info,
-  Calendar,
   Timer,
 } from "lucide-react";
-import { Todo, Report, PriorityColors } from "../../types/Common";
+import { Todo, PriorityColors } from "../../types/Common";
 import CategoryComponent from "../ui/Category";
 import { useIsMobile, useIsTablet } from "../../hooks/useBreakpoint";
 
 interface StatsViewProps {
   todos: Todo[];
-  reports: Report[];
 }
 
 interface CategoryStat {
@@ -36,7 +33,7 @@ interface PriorityStatsType {
   low: number;
 }
 
-const StatsView: React.FC<StatsViewProps> = memo(({ todos, reports }) => {
+const StatsView: React.FC<StatsViewProps> = memo(({ todos }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
 
@@ -324,44 +321,6 @@ const StatsView: React.FC<StatsViewProps> = memo(({ todos, reports }) => {
                 </div>
               );
             })}
-          </div>
-        </div>
-      )}
-
-      {/* 최근 활동 */}
-      {reports.length > 0 && (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-3 mb-6">
-            <Calendar className="w-5 h-5 text-teal-600" />
-            <h3 className="text-lg font-semibold text-gray-800">최근 활동</h3>
-          </div>
-          <div className="space-y-3">
-            {reports.slice(0, 5).map((report, index) => (
-              <div
-                key={report.id}
-                className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-              >
-                <div className="flex items-center gap-2 text-sm text-gray-500 min-w-0">
-                  <Clock className="w-4 h-4 flex-shrink-0" />
-                  <span className="whitespace-nowrap">
-                    {report.startTime} ~ {report.endTime}
-                  </span>
-                </div>
-                <span className="text-sm text-gray-800 flex-1 truncate">
-                  {report.content}
-                </span>
-                {report.category && (
-                  <CategoryComponent category={report.category} />
-                )}
-              </div>
-            ))}
-            {reports.length > 5 && (
-              <div className="text-center pt-2">
-                <span className="text-sm text-gray-500">
-                  +{reports.length - 5}개 더 보기
-                </span>
-              </div>
-            )}
           </div>
         </div>
       )}

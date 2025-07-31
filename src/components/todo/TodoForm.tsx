@@ -2,11 +2,12 @@ import React, { memo, useEffect, useState, useCallback } from "react";
 import {
   X,
   Plus,
-  Edit3,
+  Calendar,
   AlertCircle,
   AlertTriangle,
   Info,
   Tag,
+  Pencil,
 } from "lucide-react";
 import { Todo, PriorityColors } from "../../types/Common";
 import Dropdown from "../ui/Dropdown";
@@ -28,6 +29,9 @@ const TodoForm: React.FC<TodoFormProps> = memo(
     const [priority, setPriority] = useState<"high" | "medium" | "low">(
       editTodo?.priority || "medium"
     );
+    const [dueDate, setDueDate] = useState(
+      editTodo?.dueDate || new Date().toISOString().split("T")[0]
+    );
 
     useEffect(() => {
       if (isOpen) {
@@ -44,13 +48,14 @@ const TodoForm: React.FC<TodoFormProps> = memo(
           title: title.trim(),
           category,
           priority,
+          dueDate,
           isCompleted: editTodo?.isCompleted || false,
           createdAt: editTodo?.createdAt || new Date().toISOString(),
         } as Todo);
 
         onClose();
       }
-    }, [title, category, priority, editTodo, onSubmit, onClose]);
+    }, [title, category, priority, dueDate, editTodo, onSubmit, onClose]);
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent) => {
@@ -105,7 +110,7 @@ const TodoForm: React.FC<TodoFormProps> = memo(
             <div className="flex items-center gap-3">
               {editTodo ? (
                 <div className="bg-teal-100 p-2 rounded-lg">
-                  <Edit3 className="w-5 h-5 text-teal-600" />
+                  <Pencil className="w-5 h-5 text-teal-600" />
                 </div>
               ) : (
                 <div className="bg-teal-100 p-2 rounded-lg">
@@ -164,49 +169,65 @@ const TodoForm: React.FC<TodoFormProps> = memo(
                 />
               </div>
 
-              {/* 우선순위 선택 */}
+              {/* 마감일 선택 */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  우선순위
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-teal-600" />
+                    마감일
+                  </div>
                 </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {priorityOptions.map((option) => {
-                    const OptionIcon = option.icon;
-                    const isSelected = priority === option.value;
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 text-base transition-all duration-200 bg-gray-50 focus:bg-white"
+                />
+              </div>
+            </div>
 
-                    return (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() =>
-                          setPriority(option.value as "high" | "medium" | "low")
-                        }
-                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 
-                          ${
-                            isSelected
-                              ? "border-teal-400 bg-teal-50 shadow-md scale-105"
-                              : "border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100"
-                          }`}
+            {/* 우선순위 선택 */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                우선순위
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                {priorityOptions.map((option) => {
+                  const OptionIcon = option.icon;
+                  const isSelected = priority === option.value;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() =>
+                        setPriority(option.value as "high" | "medium" | "low")
+                      }
+                      className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 
+                        ${
+                          isSelected
+                            ? "border-teal-400 bg-teal-50 shadow-md scale-105"
+                            : "border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100"
+                        }`}
+                    >
+                      <OptionIcon
+                        className={`w-6 h-6 ${
+                          isSelected ? "text-teal-600" : "text-gray-500"
+                        }`}
+                        style={{
+                          color: isSelected ? option.color : undefined,
+                        }}
+                      />
+                      <span
+                        className={`text-sm font-medium ${
+                          isSelected ? "text-teal-700" : "text-gray-600"
+                        }`}
                       >
-                        <OptionIcon
-                          className={`w-6 h-6 ${
-                            isSelected ? "text-teal-600" : "text-gray-500"
-                          }`}
-                          style={{
-                            color: isSelected ? option.color : undefined,
-                          }}
-                        />
-                        <span
-                          className={`text-sm font-medium ${
-                            isSelected ? "text-teal-700" : "text-gray-600"
-                          }`}
-                        >
-                          {option.label}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

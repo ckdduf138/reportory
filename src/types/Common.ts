@@ -1,13 +1,3 @@
-export interface Report {
-  id: string;
-  startTime: string;
-  endTime: string;
-  content: string;
-  category?: Category;
-  linkedTodoId?: string; // 연결된 할일 ID
-  isFromTodo?: boolean; // 할일에서 생성된 기록인지
-}
-
 export interface Todo {
   id: string;
   title: string;
@@ -18,7 +8,7 @@ export interface Todo {
   priority: "high" | "medium" | "low";
   createdAt: string;
   completedAt?: string;
-  linkedReportId?: string; // 연결된 리포트 ID
+  dueDate: string; // 할일 예정 날짜 (YYYY-MM-DD 형식)
 }
 
 export interface Category {
@@ -27,7 +17,7 @@ export interface Category {
   color: string;
 }
 
-export type ViewMode = "todo" | "log";
+export type ViewMode = "todo";
 
 export const DefaultCategoryColor = "#7986CB";
 

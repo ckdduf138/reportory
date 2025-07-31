@@ -1,31 +1,22 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import { useIsMobile } from "../../hooks/useBreakpoint";
-import { ViewMode } from "../../types/Common";
 
 interface FloatingActionButtonProps {
-  activeTab: ViewMode;
   onTodoAdd: () => void;
-  onReportAdd: () => void;
 }
 
 const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
-  activeTab,
   onTodoAdd,
-  onReportAdd,
 }) => {
   const isMobile = useIsMobile();
 
   const handleClick = () => {
-    if (activeTab === "todo") {
-      onTodoAdd();
-    } else {
-      onReportAdd();
-    }
+    onTodoAdd();
   };
 
   const getTitle = () => {
-    return activeTab === "todo" ? "할일 추가" : "기록 추가";
+    return "할일 추가";
   };
 
   return (

@@ -1,4 +1,3 @@
-export { default as TabNavigation } from "./TabNavigation";
 export { default as SidebarMenu } from "./SidebarMenu";
 export { default as AppHeader } from "./AppHeader";
 export { default as FloatingActionButton } from "./FloatingActionButton";
