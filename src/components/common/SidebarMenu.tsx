@@ -11,11 +11,11 @@ import {
   X,
 } from "lucide-react";
 
-import { getReport } from "../utils/stores/reportUtils";
-import { formatTime } from "../utils/transalte";
-import { toast } from "./toastContainer";
-import { deleteDatabase } from "../utils/stores/dbUtils";
-import { useIsMobile } from "../hooks/useBreakpoint";
+import { getReport } from "../../utils/stores/reportUtils";
+import { formatTime } from "../../utils/transalte";
+import { toast } from "../ui/toastContainer";
+import { deleteDatabase } from "../../utils/stores/dbUtils";
+import { useIsMobile } from "../../hooks/useBreakpoint";
 
 const SidebarMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { CheckSquare, Clock } from "lucide-react";
-import { ViewMode } from "../types/Common";
-import { useIsMobile } from "../hooks/useBreakpoint";
+import { ViewMode } from "../../types/Common";
+import { useIsMobile } from "../../hooks/useBreakpoint";
 
 interface TabNavigationProps {
   activeTab: ViewMode;

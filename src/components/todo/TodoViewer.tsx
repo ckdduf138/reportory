@@ -1,8 +1,8 @@
 import React from "react";
 import { Circle, CheckCircle, Edit3, Trash2 } from "lucide-react";
-import CategoryComponent from "./Category";
-import type { Todo, Category } from "../types/Common";
-import { useIsMobile, useIsTablet } from "../hooks/useBreakpoint";
+import CategoryComponent from "../ui/Category";
+import type { Todo, Category } from "../../types/Common";
+import { useIsMobile, useIsTablet } from "../../hooks/useBreakpoint";
 
 interface TodoViewerProps {
   todos: Todo[];

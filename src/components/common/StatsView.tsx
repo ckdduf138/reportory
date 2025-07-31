@@ -15,9 +15,9 @@ import {
   Calendar,
   Timer,
 } from "lucide-react";
-import { Todo, Report, PriorityColors } from "../types/Common";
-import CategoryComponent from "./Category";
-import { useIsMobile, useIsTablet } from "../hooks/useBreakpoint";
+import { Todo, Report, PriorityColors } from "../../types/Common";
+import CategoryComponent from "../ui/Category";
+import { useIsMobile, useIsTablet } from "../../hooks/useBreakpoint";
 
 interface StatsViewProps {
   todos: Todo[];

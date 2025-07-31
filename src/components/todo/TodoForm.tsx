@@ -8,9 +8,9 @@ import {
   Info,
   Tag,
 } from "lucide-react";
-import { Todo, PriorityColors } from "../types/Common";
-import Dropdown from "./Dropdown";
-import { useIsMobile } from "../hooks/useBreakpoint";
+import { Todo, PriorityColors } from "../../types/Common";
+import Dropdown from "../ui/Dropdown";
+import { useIsMobile } from "../../hooks/useBreakpoint";
 
 interface TodoFormProps {
   isOpen: boolean;

@@ -9,10 +9,10 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-import { formatTime } from "../utils/transalte";
-import { Report } from "../types/Common";
-import CategoryComponent from "./Category";
-import { useIsMobile, useIsTablet } from "../hooks/useBreakpoint";
+import { formatTime } from "../../utils/transalte";
+import { Report } from "../../types/Common";
+import CategoryComponent from "../ui/Category";
+import { useIsMobile, useIsTablet } from "../../hooks/useBreakpoint";
 
 interface ReportViewerProps {
   reports: Report[];

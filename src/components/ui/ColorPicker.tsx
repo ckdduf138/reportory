@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Palette } from "lucide-react";
 
-import { Category } from "../types/Common";
-import { useIsMobile } from "../hooks/useBreakpoint";
+import { Category } from "../../types/Common";
+import { useIsMobile } from "../../hooks/useBreakpoint";
 
 const colors = [
   "#7986CB", // 보라색
