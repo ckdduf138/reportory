@@ -123,7 +123,7 @@ const TodoViewer = React.forwardRef<HTMLDivElement, TodoViewerProps>(
                 </div>
 
                 <div
-                  className={`grid gap-4`}
+                  className={`grid gap-4 auto-rows-fr`}
                   style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
                 >
                   {sortedIncompleteTodos.map((todo) => (
@@ -131,26 +131,29 @@ const TodoViewer = React.forwardRef<HTMLDivElement, TodoViewerProps>(
                       key={todo.id}
                       className={`bg-white rounded-xl border-l-4 ${getPriorityBorderColor(
                         todo.priority
-                      )} shadow-sm hover:shadow-md transition-all group cursor-pointer overflow-hidden`}
+                      )} shadow-sm hover:shadow-md transition-all group cursor-pointer overflow-hidden h-full flex flex-col`}
                     >
-                      <div className="p-4">
-                        <div className="flex items-start gap-3">
+                      <div className="p-4 flex-1 flex flex-col">
+                        <div className="flex items-start gap-3 flex-1">
                           {/* 체크박스 */}
                           <button
                             onClick={() => onToggleComplete(todo.id)}
-                            className="mt-1 text-gray-400 hover:text-teal-500 transition-colors hover:scale-110 duration-200"
+                            className="mt-1 text-gray-400 hover:text-teal-500 transition-colors hover:scale-110 duration-200 flex-shrink-0"
                           >
                             <Circle className="w-5 h-5" />
                           </button>
 
                           {/* 내용 */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-medium text-gray-900">
+                          <div className="flex-1 min-w-0 flex flex-col">
+                            <div className="flex items-start gap-2 mb-1">
+                              <h4
+                                className="font-medium text-gray-900 flex-1 line-clamp-2"
+                                title={todo.title}
+                              >
                                 {todo.title}
                               </h4>
                               <span
-                                className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(
+                                className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${getPriorityColor(
                                   todo.priority
                                 )}`}
                               >
@@ -158,11 +161,14 @@ const TodoViewer = React.forwardRef<HTMLDivElement, TodoViewerProps>(
                               </span>
                             </div>
                             {todo.description && (
-                              <p className="text-sm text-gray-600 mb-2">
+                              <p
+                                className="text-sm text-gray-600 mb-2 line-clamp-3 flex-1"
+                                title={todo.description}
+                              >
                                 {todo.description}
                               </p>
                             )}
-                            <div className="flex items-center gap-2 flex-wrap">
+                            <div className="flex items-center gap-2 flex-wrap mt-auto">
                               {todo.category && (
                                 <CategoryComponent category={todo.category} />
                               )}
@@ -229,57 +235,65 @@ const TodoViewer = React.forwardRef<HTMLDivElement, TodoViewerProps>(
                 </div>
 
                 <div
-                  className={`grid gap-4`}
+                  className={`grid gap-4 auto-rows-fr`}
                   style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
                 >
                   {sortedCompletedTodos.map((todo) => (
                     <div
                       key={todo.id}
-                      className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden opacity-75 hover:opacity-90 transition-opacity group"
+                      className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden opacity-75 hover:opacity-90 transition-opacity group h-full flex flex-col"
                     >
                       <div className="h-1 bg-teal-500" />
 
-                      <div className="p-4">
-                        <div className="flex items-start gap-3">
+                      <div className="p-4 flex-1 flex flex-col">
+                        <div className="flex items-start gap-3 flex-1">
                           {/* 체크박스 */}
                           <button
                             onClick={() => onToggleComplete(todo.id)}
-                            className="mt-1 transition-colors hover:scale-110 duration-200"
+                            className="mt-1 transition-colors hover:scale-110 duration-200 flex-shrink-0"
                           >
                             <CheckCircle className="w-5 h-5 text-teal-500" />
                           </button>
 
                           {/* 내용 */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-medium text-gray-700 line-through">
+                          <div className="flex-1 min-w-0 flex flex-col">
+                            <div className="flex items-start gap-2 mb-1">
+                              <h4
+                                className="font-medium text-gray-700 line-through flex-1 line-clamp-2"
+                                title={todo.title}
+                              >
                                 {todo.title}
                               </h4>
-                              <span
-                                className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(
-                                  todo.priority
-                                )} opacity-60`}
-                              >
-                                {getPriorityLabel(todo.priority)}
-                              </span>
-                              {todo.completedAt && (
-                                <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded-full">
-                                  {new Date(
-                                    todo.completedAt
-                                  ).toLocaleTimeString("ko-KR", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}{" "}
-                                  완료
+                              <div className="flex flex-col gap-1 flex-shrink-0 items-end">
+                                <span
+                                  className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(
+                                    todo.priority
+                                  )} opacity-60`}
+                                >
+                                  {getPriorityLabel(todo.priority)}
                                 </span>
-                              )}
+                                {todo.completedAt && (
+                                  <span className="text-xs text-gray-500 bg-white px-2 py-1 rounded-full whitespace-nowrap">
+                                    {new Date(
+                                      todo.completedAt
+                                    ).toLocaleTimeString("ko-KR", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}{" "}
+                                    완료
+                                  </span>
+                                )}
+                              </div>
                             </div>
                             {todo.description && (
-                              <p className="text-sm text-gray-500 line-through mb-2">
+                              <p
+                                className="text-sm text-gray-500 line-through mb-2 line-clamp-3 flex-1"
+                                title={todo.description}
+                              >
                                 {todo.description}
                               </p>
                             )}
-                            <div className="flex items-center gap-2 flex-wrap">
+                            <div className="flex items-center gap-2 flex-wrap mt-auto">
                               {todo.category && (
                                 <CategoryComponent category={todo.category} />
                               )}
