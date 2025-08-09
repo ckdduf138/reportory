@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Category, DefaultCategoryColor } from "../types/Common";
 import { useCategory } from "./useCategory";
+import { useSettings } from "./useSettings";
 
 export const useCategoryManagement = () => {
+  const { settings } = useSettings();
   const {
     categories,
     isLoading,
@@ -15,8 +17,9 @@ export const useCategoryManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [selectedColor, setSelectedColor] =
-    useState<string>(DefaultCategoryColor);
+  const [selectedColor, setSelectedColor] = useState<string>(
+    settings.primaryColor || DefaultCategoryColor
+  );
 
   const handleSaveCategory = async () => {
     if (!categoryName.trim()) return;
@@ -40,7 +43,7 @@ export const useCategoryManagement = () => {
     setIsModalOpen(false);
     setCategoryName("");
     setEditingCategory(null);
-    setSelectedColor(DefaultCategoryColor);
+    setSelectedColor(settings.primaryColor || DefaultCategoryColor);
   };
 
   const startEdit = (category: Category) => {
@@ -51,6 +54,7 @@ export const useCategoryManagement = () => {
   };
 
   const openCreateModal = () => {
+    setSelectedColor(settings.primaryColor || DefaultCategoryColor);
     setIsModalOpen(true);
   };
 

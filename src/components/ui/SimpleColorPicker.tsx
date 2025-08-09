@@ -23,6 +23,15 @@ const SimpleColorPicker: React.FC<SimpleColorPickerProps> = ({
   selectedColor,
   onColorChange,
 }) => {
+  // 색상의 밝기를 계산하여 체크 마크 색상을 결정하는 함수
+  const getCheckColor = (hexColor: string) => {
+    const r = parseInt(hexColor.slice(1, 3), 16);
+    const g = parseInt(hexColor.slice(3, 5), 16);
+    const b = parseInt(hexColor.slice(5, 7), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128 ? "#000000" : "#FFFFFF";
+  };
+
   return (
     <div className="grid grid-cols-5 gap-2">
       {colors.map((color) => (
@@ -31,7 +40,7 @@ const SimpleColorPicker: React.FC<SimpleColorPickerProps> = ({
           type="button"
           onClick={() => onColorChange(color)}
           className={`
-            w-8 h-8 rounded-full border-2 transition-all duration-200
+            w-8 h-8 rounded-full border-2 transition-all duration-200 relative
             ${
               selectedColor === color
                 ? "border-gray-400 scale-110"
@@ -42,7 +51,13 @@ const SimpleColorPicker: React.FC<SimpleColorPickerProps> = ({
           style={{ backgroundColor: color }}
         >
           {selectedColor === color && (
-            <Check className="w-4 h-4 text-white drop-shadow-sm" />
+            <Check
+              className="w-4 h-4 drop-shadow-md font-bold"
+              style={{
+                color: getCheckColor(color),
+                filter: "drop-shadow(0 0 2px rgba(0,0,0,0.8))",
+              }}
+            />
           )}
         </button>
       ))}
