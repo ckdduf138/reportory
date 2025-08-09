@@ -5,3 +5,4 @@ export { default as SimpleColorPicker } from "./SimpleColorPicker";
 export { default as Dropdown } from "./Dropdown";
 export { default as Category } from "./Category";
 export { toast } from "./toastContainer";
+export { LazyImage } from "./LazyImage";

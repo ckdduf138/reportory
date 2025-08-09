@@ -38,6 +38,28 @@
     <!-- Sitemap -->
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://reportory.com/sitemap.xml" />
 
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Reportory",
+      "description": "하루의 기록을 쉽고 간편하게 남기고, 분석해주는 일상 기록 플랫폼",
+      "url": "https://reportory.com",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "Reportory Team"
+      }
+    }
+    </script>
+
     <!-- 숨은 로고 이미지 -->
     <img src="/images/favicon.svg" alt="Reportory Logo" style="display:none;" />
 
@@ -45,6 +67,10 @@
     <title>Reportory | 하루의 기록을 남기고 분석해주는 일상 기록 플랫폼</title>
 </head>
 <body>
+    <noscript>이 앱을 사용하려면 JavaScript를 활성화해주세요.</noscript>
     <div id="root"></div>
+    
+    <!-- Service Worker는 프로덕션 빌드에서만 활성화 -->
+    <!-- 개발 중에는 비활성화됨 -->
 </body>
 </html>

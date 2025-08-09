@@ -5,6 +5,7 @@ import {
   SidebarMenu,
   AppHeader,
   FloatingActionButton,
+  SEOHead,
 } from "../components/common";
 import { Loader } from "../components/ui";
 
@@ -40,6 +41,12 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">
+      <SEOHead 
+        title="Reportory | 하루의 기록을 남기고 분석해주는 일상 기록 플랫폼"
+        description="오늘 하루를 기록해보세요. 간편한 할일 관리와 일상 추적으로 더 나은 내일을 만들어보세요."
+        keywords="할일관리, 일상기록, 하루추적, 일기, 습관관리, todo, daily report"
+      />
+      
       <div className="container mx-auto max-w-7xl">
         {/* 헤더 */}
         <AppHeader />

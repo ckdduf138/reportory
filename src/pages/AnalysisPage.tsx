@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Target, Activity, Award, Clock } from "lucide-react";
 
-import { AppHeader, SidebarMenu } from "../components/common";
+import { AppHeader, SidebarMenu, SEOHead } from "../components/common";
 import {
   StatCard,
   AnalysisFilters,
@@ -33,6 +33,12 @@ const AnalysisPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">
+      <SEOHead 
+        title="분석 - Reportory | 할일 분석과 생산성 인사이트"
+        description="할일 완료율, 카테고리별 분석, 일일 트렌드를 한눈에 확인하고 생산성을 향상시켜보세요."
+        keywords="생산성분석, 할일통계, 업무분석, 완료율, 트렌드분석, 카테고리분석"
+      />
+      
       <div className="container mx-auto max-w-6xl">
         <AppHeader
           title="분석"
