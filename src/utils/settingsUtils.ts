@@ -27,10 +27,27 @@ export const saveSettings = (settings: AppSettings): void => {
 
 export const exportData = async (): Promise<void> => {
   try {
+    // IndexedDB에서 실제 데이터 가져오기
+    const { getTodos } = await import("./stores/todoUtils");
+    const { getCategory } = await import("./stores/categoryUtils");
+
+    const [todos, categories] = await Promise.all([
+      getTodos().catch((error) => {
+        console.error("getTodos 오류:", error);
+        return [];
+      }),
+      getCategory().catch((error) => {
+        console.error("getCategory 오류:", error);
+        return [];
+      }),
+    ]);
+
     const data = {
-      todos: localStorage.getItem("todos") || "[]",
-      categories: localStorage.getItem("categories") || "[]",
+      todos: JSON.stringify(todos),
+      categories: JSON.stringify(categories),
       settings: localStorage.getItem(SETTINGS_KEY) || "{}",
+      exportDate: new Date().toISOString(),
+      version: "1.0",
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -47,8 +64,14 @@ export const exportData = async (): Promise<void> => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
+    console.log("💾 파일 다운로드 완료");
     toast.success("데이터가 성공적으로 내보내졌습니다.");
   } catch (error) {
+    console.error("❌ Export error:", error);
+    console.error(
+      "❌ Error stack:",
+      error instanceof Error ? error.stack : "Unknown error"
+    );
     toast.error("데이터 내보내기에 실패했습니다.");
     throw error;
   }
@@ -59,26 +82,61 @@ export const importData = (): Promise<void> => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = ".json";
-    input.onchange = (e) => {
+    input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
           try {
             const data = JSON.parse(e.target?.result as string);
 
-            if (data.todos) localStorage.setItem("todos", data.todos);
-            if (data.categories)
-              localStorage.setItem("categories", data.categories);
-            if (data.settings)
-              localStorage.setItem(SETTINGS_KEY, data.settings);
+            // 데이터 유효성 검사
+            if (!data.todos && !data.categories && !data.settings) {
+              throw new Error("잘못된 백업 파일 형식입니다.");
+            }
 
-            toast.success(
-              "데이터가 성공적으로 가져와졌습니다. 페이지를 새로고침해주세요."
-            );
+            // IndexedDB에 데이터 복원
+            if (data.todos) {
+              const todos = JSON.parse(data.todos);
+              const { createTodo } = await import("./stores/todoUtils");
+
+              // 기존 데이터 삭제 후 복원
+              await deleteDatabase();
+              for (const todo of todos) {
+                try {
+                  await createTodo(todo);
+                } catch (error) {
+                  console.warn("Todo 복원 실패:", error);
+                }
+              }
+            }
+
+            if (data.categories) {
+              const categories = JSON.parse(data.categories);
+              const { createCategory } = await import("./stores/categoryUtils");
+
+              for (const category of categories) {
+                try {
+                  await createCategory(category);
+                } catch (error) {
+                  console.warn("Category 복원 실패:", error);
+                }
+              }
+            }
+
+            // 설정 복원
+            if (data.settings) {
+              localStorage.setItem(SETTINGS_KEY, data.settings);
+            }
+
+            toast.success("데이터를 가져왔습니다");
+
+            // 바로 새로고침
+            window.location.reload();
             resolve();
           } catch (error) {
-            toast.error("잘못된 파일 형식입니다.");
+            console.error("Import error:", error);
+            toast.error("잘못된 파일 형식이거나 데이터 복원에 실패했습니다.");
             reject(error);
           }
         };

@@ -30,6 +30,8 @@ export const useSettings = () => {
     setIsLoading(true);
     try {
       await exportData();
+    } catch (error) {
+      console.error("데이터 내보내기 오류:", error);
     } finally {
       setIsLoading(false);
     }
