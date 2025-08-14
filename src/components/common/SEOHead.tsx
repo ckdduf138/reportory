@@ -9,9 +9,9 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "Reportory | 하루의 기록을 남기고 분석해주는 일상 기록 플랫폼",
-  description = "하루의 기록을 쉽고 간편하게 남기고, 분석해주는 일상 기록 플랫폼입니다. 습관 관리, 감정 추적, 하루를 돌아보는 데 도움을 줍니다.",
-  keywords = "일기, 하루 기록, 감정 추적, 습관 분석, 일상 분석, 루틴 추적, 라이프로그, Reportory",
+  title = "Reportory | 효율적인 할일 관리와 일상 기록 플랫폼",
+  description = "할일 관리부터 일상 기록까지! Reportory로 체계적인 업무 관리와 개인 성장을 경험하세요. 카테고리별 할일 분류, 진행 상황 분석, 성과 추적이 가능합니다.",
+  keywords = "할일 관리, 투두리스트, todo list, 업무 관리, 일정 관리, 생산성, 프로젝트 관리, 개인 성장, 일상 기록, 습관 추적",
   canonical,
   ogImage = "/images/favicon.svg"
 }) => {
@@ -39,13 +39,18 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     // Update meta tags
     updateMetaTag('description', description);
     updateMetaTag('keywords', keywords);
+    updateMetaTag('robots', 'index, follow');
+    updateMetaTag('author', 'Reportory Team');
     
     // Open Graph
     updateMetaTag('og:title', title, true);
     updateMetaTag('og:description', description, true);
     updateMetaTag('og:image', ogImage, true);
+    updateMetaTag('og:type', 'website', true);
+    updateMetaTag('og:site_name', 'Reportory', true);
     
     // Twitter
+    updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
     updateMetaTag('twitter:image', ogImage);

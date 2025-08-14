@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AppHeader, SidebarMenu } from "../components/common";
+import { AppHeader, SidebarMenu, SEOHead } from "../components/common";
 import { useTodo } from "../hooks/todo/useTodo";
 import { useShareManager } from "../hooks/useShareManager";
 import { ReportPreview, ShareActions } from "../components/share";
@@ -30,6 +30,13 @@ const SharePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">
+      <SEOHead 
+        title="공유하기 | Reportory"
+        description="완료한 할일들을 일일 리포트로 정리하여 팀원들과 공유하세요. 다양한 형태로 내보내기와 공유가 가능합니다."
+        keywords="일일 리포트, 업무 공유, 성과 공유, 진행 상황 공유, 팀 협업"
+        canonical="https://reportory.com/share"
+      />
+      
       <div className="container mx-auto max-w-4xl">
         <AppHeader
           title="공유하기"

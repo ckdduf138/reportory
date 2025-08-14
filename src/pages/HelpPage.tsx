@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppHeader, SidebarMenu } from "../components/common";
+import { AppHeader, SidebarMenu, SEOHead } from "../components/common";
 import {
   FeatureGrid,
   QuickStartGuide,
@@ -14,6 +14,13 @@ const HelpPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">
+      <SEOHead 
+        title="도움말 및 사용법 | Reportory"
+        description="Reportory 할일 관리 앱의 상세한 사용법, 주요 기능 안내, FAQ를 확인하세요. 더 효율적인 업무 관리를 위한 가이드를 제공합니다."
+        keywords="사용법, 도움말, 가이드, FAQ, 할일관리 방법, 앱 사용법"
+        canonical="https://reportory.com/help"
+      />
+      
       <div className="container mx-auto max-w-4xl">
         <AppHeader
           title="도움말"

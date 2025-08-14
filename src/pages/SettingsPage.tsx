@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppHeader, SidebarMenu } from "../components/common";
+import { AppHeader, SidebarMenu, SEOHead } from "../components/common";
 import { Loader } from "../components/ui";
 import { ThemeSettings, DataManagement, AppInfo } from "../components/settings";
 import { useIsMobile } from "../hooks/useBreakpoint";
@@ -19,6 +19,13 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-teal-50/30">
+      <SEOHead 
+        title="설정 | Reportory"
+        description="Reportory 앱의 테마, 알림, 데이터 백업 등 개인 설정을 관리하고 앱을 개인화하세요."
+        keywords="앱 설정, 테마 설정, 데이터 백업, 개인화, 환경설정"
+        canonical="https://reportory.com/settings"
+      />
+      
       <div className="container mx-auto max-w-4xl">
         <AppHeader
           title="설정"
