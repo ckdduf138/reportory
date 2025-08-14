@@ -18,11 +18,11 @@ export const VersionInfo: React.FC<VersionInfoProps> = ({ className = "" }) => {
       date: "2025-08-14",
       type: "major" as const,
       changes: [
-        "🎉 첫 번째 정식 버전 출시",
-        "🔍 Google SEO 최적화 완료",
-        "📱 반응형 디자인 개선",
-        "🎨 UI/UX 전면 개선",
-        "⚡ 성능 최적화"
+        "첫 번째 정식 버전 출시",
+        "Google SEO 최적화 완료",
+        "반응형 디자인 개선",
+        "UI/UX 전면 개선",
+        "성능 최적화"
       ]
     },
     {
@@ -30,10 +30,10 @@ export const VersionInfo: React.FC<VersionInfoProps> = ({ className = "" }) => {
       date: "2025-08-10",
       type: "minor" as const,
       changes: [
-        "✨ 기본 할일 관리 기능",
-        "📊 통계 및 분석 기능",
-        "🔗 공유 기능",
-        "⚙️ 설정 페이지"
+        "기본 할일 관리 기능",
+        "통계 및 분석 기능",
+        "공유 기능",
+        "설정 페이지"
       ]
     }
   ];
@@ -59,11 +59,11 @@ export const VersionInfo: React.FC<VersionInfoProps> = ({ className = "" }) => {
       {/* 버전 정보 버튼 */}
       <button
         onClick={() => setShowModal(true)}
-        className={`inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 ${className}`}
+        className={`inline-flex items-center gap-2 px-3 py-2 text-sm bg-teal-50 hover:bg-teal-100 text-teal-700 hover:text-teal-800 rounded-lg transition-colors duration-200 ${className}`}
         title="버전 정보 및 업데이트 내역"
       >
-        <Info className="w-3 h-3" />
-        <span>v{version}</span>
+        <Info className="w-4 h-4" />
+        <span>v{version} 보기</span>
       </button>
 
       {/* 모달 */}
@@ -132,8 +132,8 @@ export const VersionInfo: React.FC<VersionInfoProps> = ({ className = "" }) => {
                         <ul className="space-y-1">
                           {update.changes.map((change, changeIndex) => (
                             <li key={changeIndex} className="text-sm text-gray-700 flex items-start gap-2">
-                              <span className="text-lg leading-none">{change.charAt(0)}</span>
-                              <span>{change.slice(2)}</span>
+                              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                              <span>{change}</span>
                             </li>
                           ))}
                         </ul>

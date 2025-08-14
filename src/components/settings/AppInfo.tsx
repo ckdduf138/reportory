@@ -1,5 +1,6 @@
 import React from "react";
 import { HelpCircle } from "lucide-react";
+import { VersionInfo } from "../common/VersionInfo";
 
 interface AppInfoProps {
   version?: string;
@@ -13,9 +14,8 @@ const AppInfo: React.FC<AppInfoProps> = ({
   developer = "Daily Report Team",
 }) => {
   const infoItems = [
-    { label: "버전", value: version },
-    { label: "마지막 업데이트", value: lastUpdate },
     { label: "개발자", value: developer },
+    { label: "마지막 업데이트", value: lastUpdate },
   ];
 
   return (
@@ -26,6 +26,12 @@ const AppInfo: React.FC<AppInfoProps> = ({
       </div>
 
       <div className="space-y-3">
+        {/* 버전 정보 및 변경내역 */}
+        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+          <span className="text-gray-700">버전 및 변경내역</span>
+          <VersionInfo />
+        </div>
+        
         {infoItems.map((item) => (
           <div
             key={item.label}
