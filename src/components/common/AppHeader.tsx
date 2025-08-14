@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar } from "lucide-react";
 import { useIsMobile } from "../../hooks/useBreakpoint";
+import { VersionInfo } from "./VersionInfo";
 
 interface AppHeaderProps {
   title?: string;
@@ -14,7 +15,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   const isMobile = useIsMobile();
 
   return (
-    <div className={`text-center ${isMobile ? "px-4 py-6" : "px-8 py-10"}`}>
+    <div className={`text-center ${isMobile ? "px-4 py-6" : "px-8 py-10"} relative`}>
+      {/* 버전 정보 (우상단) */}
+      <div className="absolute top-4 right-4">
+        <VersionInfo />
+      </div>
+      
       <div className={`flex items-center justify-center gap-3 mb-4`}>
         <div
           className={`bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl 
