@@ -17,7 +17,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     <div className={`text-center ${isMobile ? "px-4 py-6" : "px-8 py-10"}`}>
       <div className={`flex items-center justify-center gap-3 mb-4`}>
         <div
-          className={`bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl 
+          className={`bg-gradient-to-br from-teal-400 to-teal-500 rounded-xl 
           ${isMobile ? "p-2.5" : "p-4"} shadow-lg`}
         >
           <img
