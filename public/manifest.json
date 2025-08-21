@@ -1,7 +1,7 @@
 {
-  "short_name": "Reportory",
-  "name": "Reportory - 하루의 기록을 남기고 분석해주는 일상 기록 플랫폼",
-  "description": "하루의 기록을 쉽고 간편하게 남기고, 분석해주는 일상 기록 플랫폼입니다. 습관 관리, 감정 추적, 하루를 돌아보는 데 도움을 줍니다.",
+  "short_name": "Reportory 할일앱",
+  "name": "Reportory - 무료 할일 목록 관리 앱 | 최고의 투두 리스트 도구",
+  "description": "무료 할일 목록 앱 Reportory로 생산성을 높이세요! 투두 리스트 작성, 카테고리별 할일 관리, 진행률 분석까지 한 번에 가능한 최고의 할일 관리 도구입니다.",
   "icons": [
     {
       "src": "/images/favicon.svg",

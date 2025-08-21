@@ -2,12 +2,23 @@
 User-agent: *
 Allow: /
 
+# 우선순위 페이지들 명시
+Allow: /home
+Allow: /category
+Allow: /stats
+Allow: /share
+Allow: /settings
+Allow: /help
+
 # Block access to sensitive files
 Disallow: /build/
 Disallow: /src/
 Disallow: /*.json$
 Disallow: /*.js.map$
 Disallow: /*.css.map$
+
+# Sitemap 위치
+Sitemap: https://reportory.com/sitemap.xml
 
 # Sitemap location
 Sitemap: https://reportory.com/sitemap.xml

@@ -9,9 +9,9 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "Reportory | 효율적인 할일 관리와 일상 기록 플랫폼",
-  description = "할일 관리부터 일상 기록까지! Reportory로 체계적인 업무 관리와 개인 성장을 경험하세요. 카테고리별 할일 분류, 진행 상황 분석, 성과 추적이 가능합니다.",
-  keywords = "할일 관리, 투두리스트, todo list, 업무 관리, 일정 관리, 생산성, 프로젝트 관리, 개인 성장, 일상 기록, 습관 추적",
+  title = "무료 할일 목록 앱 Reportory | 최고의 투두 리스트 관리 도구",
+  description = "무료 할일 목록 앱 Reportory! 투두 리스트, 업무 관리, 일정 관리를 한 번에. 카테고리별 할일 분류, 진행률 분석, 생산성 향상을 위한 최고의 할일 관리 도구입니다.",
+  keywords = "할일 목록, 할일 관리, 투두 리스트, todo list, 할일 앱, 업무 관리, 일정 관리, 생산성 도구, 프로젝트 관리, 무료 할일 앱, 개인 성장, 일상 기록, 습관 추적, 할일 체크리스트, 업무 효율성",
   canonical,
   ogImage = "/images/favicon.svg"
 }) => {
