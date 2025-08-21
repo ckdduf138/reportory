@@ -20,8 +20,12 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           className={`bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl 
           ${isMobile ? "p-2.5" : "p-4"} shadow-lg`}
         >
-          <Calendar
-            className={`${isMobile ? "w-5 h-5" : "w-8 h-8"} text-white`}
+          <img
+            src="/images/favicon.svg"
+            alt="Reportory Logo"
+            className={`${
+              isMobile ? "w-5 h-5" : "w-8 h-8"
+            } filter brightness-0 invert`}
           />
         </div>
         <div>

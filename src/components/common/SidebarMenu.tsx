@@ -109,13 +109,24 @@ const SidebarMenu: React.FC = () => {
       >
         {/* 헤더 */}
         <div className={`relative ${isMobile ? "p-4" : "p-6"}`}>
-          <h1
-            className={`${
-              isMobile ? "text-xl" : "text-2xl"
-            } font-bold text-white tracking-tight`}
-          >
-            Reportory
-          </h1>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="bg-white/20 rounded-lg p-2">
+              <img
+                src="/images/favicon.svg"
+                alt="Reportory Logo"
+                className={`${
+                  isMobile ? "w-6 h-6" : "w-8 h-8"
+                } filter brightness-0 invert`}
+              />
+            </div>
+            <h1
+              className={`${
+                isMobile ? "text-xl" : "text-2xl"
+              } font-bold text-white tracking-tight`}
+            >
+              Reportory
+            </h1>
+          </div>
           <p
             className={`text-white/90 ${isMobile ? "text-xs" : "text-sm"} mt-1`}
           >
